@@ -1,7 +1,5 @@
 #include "OP2Utility/include/OP2Utility.h"
 
-#include "OP2Utility/src/Sprite/OP2BmpLoader.h"
-
 #ifndef EXPORT
 #define EXPORT __declspec(dllexport)
 #endif
