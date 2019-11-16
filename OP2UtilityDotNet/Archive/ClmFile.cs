@@ -14,9 +14,9 @@ namespace OP2UtilityDotNet
 			Archive_WriteClmFile(archiveFilename, files);
 		}
 
-		[DllImport("OP2UtilityForC.dll")] private static extern IntPtr Archive_CreateClmFile(string filename);
-		[DllImport("OP2UtilityForC.dll")] private static extern void Archive_ReleaseClmFile(IntPtr clmFile);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr Archive_CreateClmFile(string filename);
+		[DllImport(Platform.DLLPath)] private static extern void Archive_ReleaseClmFile(IntPtr clmFile);
 
-		[DllImport("OP2UtilityForC.dll")] private static extern void Archive_WriteClmFile(string archiveFilename, string filesToPack);	// Pipe delimited
+		[DllImport(Platform.DLLPath)] private static extern void Archive_WriteClmFile(string archiveFilename, string filesToPack);	// Pipe delimited
 	}
 }

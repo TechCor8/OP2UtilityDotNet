@@ -12,10 +12,9 @@ namespace OP2UtilityDotNet
 
 		public void ExtractImage(ulong index, string filenameOut)		{ OP2BmpLoader_ExtractImage(m_BmpLoaderPtr, index, filenameOut);		}
 
+		[DllImport(Platform.DLLPath)] private static extern IntPtr OP2BmpLoader_Create(string bmpFilename, string artFilename);
+		[DllImport(Platform.DLLPath)] private static extern void OP2BmpLoader_Release(IntPtr bmpLoader);
 
-		[DllImport("OP2UtilityForC.dll")] private static extern IntPtr OP2BmpLoader_Create(string bmpFilename, string artFilename);
-		[DllImport("OP2UtilityForC.dll")] private static extern void OP2BmpLoader_Release(IntPtr bmpLoader);
-
-		[DllImport("OP2UtilityForC.dll")] private static extern void OP2BmpLoader_ExtractImage(IntPtr bmpLoader, ulong index, string filenameOut);
+		[DllImport(Platform.DLLPath)] private static extern void OP2BmpLoader_ExtractImage(IntPtr bmpLoader, ulong index, string filenameOut);
 	}
 }
