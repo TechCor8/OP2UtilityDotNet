@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Wrapper">
+      <UniqueIdentifier>{f8a5e4a5-fb13-43ba-b64d-0dfdccb94b40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Wrapper\Archive.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\ResourceManager.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\Map.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\OP2BmpLoader.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

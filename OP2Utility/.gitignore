@@ -1,0 +1,14 @@
+**/x86
+**/x64
+**/Debug
+**/Release
+**/packages
+.build/
+*.user
+*.vs
+VisualStudio
+Makefile
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+libOP2Utility.a
