@@ -17,7 +17,7 @@ namespace OP2UtilityDotNet
 		public void ExtractFileByName(string name, string pathOut)				{ Archive_ExtractFileByName(m_ArchivePtr, name, pathOut);					}
 
 		public ulong GetIndex(string name)										{ return Archive_GetIndex(m_ArchivePtr, name);								}
-		public string GetName(ulong index)										{ return Marshal.PtrToStringAnsi(Archive_GetName(m_ArchivePtr, index));		}
+		public string GetName(ulong index)										{ return Marshalling.GetString(Archive_GetName(m_ArchivePtr, index));		}
 
 		public uint GetSize(ulong index)										{ return Archive_GetSize(m_ArchivePtr, index);								}
 		public void ExtractFileByIndex(ulong index, string pathOut)				{ Archive_ExtractFileByIndex(m_ArchivePtr, index, pathOut);					}

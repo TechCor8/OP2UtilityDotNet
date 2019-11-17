@@ -58,7 +58,7 @@ namespace OP2UtilityDotNet
 
 		// Listing of all tile set sources associated with the map.
 		public ulong GetTilesetSourceCount()											{ return Map_GetTilesetSourceCount(m_MapPtr);										}
-		public string GetTilesetSourceFilename(int index)								{ return Marshal.PtrToStringAnsi(Map_GetTilesetSourceFilename(m_MapPtr, index));	}
+		public string GetTilesetSourceFilename(int index)								{ return Marshalling.GetString(Map_GetTilesetSourceFilename(m_MapPtr, index));		}
 		public uint GetTilesetSourceNumTiles(int index)									{ return Map_GetTilesetSourceNumTiles(m_MapPtr, index);								}
 		public void SetTilesetSourceFilename(int index, string tilesetFilename)			{ Map_SetTilesetSourceFilename(m_MapPtr, index, tilesetFilename);					}
 		public void SetTilesetSourceNumTiles(int index, int numTiles)					{ Map_SetTilesetSourceNumTiles(m_MapPtr, index, numTiles);							}
@@ -130,7 +130,7 @@ namespace OP2UtilityDotNet
 
 		//std::vector<TileGroup> tileGroups;
 		public ulong GetTileGroupCount()												{ return Map_GetTileGroupCount(m_MapPtr);											}
-		public string GetTileGroupName(int index)										{ return Marshal.PtrToStringAnsi(Map_GetTileGroupName(m_MapPtr, index));			}
+		public string GetTileGroupName(int index)										{ return Marshalling.GetString(Map_GetTileGroupName(m_MapPtr, index));				}
 		public uint GetTileGroupTileWidth(int index)									{ return Map_GetTileGroupTileWidth(m_MapPtr, index);								}
 		public uint GetTileGroupTileHeight(int index)									{ return Map_GetTileGroupTileHeight(m_MapPtr, index);								}
 

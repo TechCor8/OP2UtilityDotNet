@@ -1,5 +1,9 @@
 #include "Marshalling.h"
 
+#ifndef EXPORT
+#define EXPORT __declspec(dllexport)
+#endif
+
 const char* GetCStrFromString(std::string s)
 {
 	const char* _str = s.c_str();
@@ -36,4 +40,12 @@ std::vector<std::string> SplitString(std::string s, char delimiter)
 		vSplit.push_back(splitLine);
 
 	return vSplit;
+}
+
+extern "C"
+{
+	extern EXPORT void __stdcall FreeString(char* str)
+	{
+		delete [] str;
+	}
 }

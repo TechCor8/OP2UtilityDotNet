@@ -12,12 +12,12 @@ namespace OP2UtilityDotNet
 
 		public string[] GetAllFilenames(string filenameRegexStr, bool accessArchives)
 		{
-			return Marshal.PtrToStringAnsi(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
+			return Marshalling.GetString(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
 		public string[] GetAllFilenamesOfType(string filenameRegexStr, bool accessArchives)
 		{
-			return Marshal.PtrToStringAnsi(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
+			return Marshalling.GetString(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
 		/// <summary>
@@ -25,7 +25,7 @@ namespace OP2UtilityDotNet
 		/// </summary>
 		public string FindContainingArchivePath(string filename)
 		{
-			return Marshal.PtrToStringAnsi(ResourceManager_FindContainingArchivePath(m_ResourceManagerPtr, filename));
+			return Marshalling.GetString(ResourceManager_FindContainingArchivePath(m_ResourceManagerPtr, filename));
 		}
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace OP2UtilityDotNet
 		/// </summary>
 		public string[] GetArchiveFilenames()
 		{
-			return Marshal.PtrToStringAnsi(ResourceManager_GetArchiveFilenames(m_ResourceManagerPtr)).Split('|');
+			return Marshalling.GetString(ResourceManager_GetArchiveFilenames(m_ResourceManagerPtr)).Split('|');
 		}
 
 		public ulong GetResourceSize(string filename, bool accessArchives)				{ return ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);	}
