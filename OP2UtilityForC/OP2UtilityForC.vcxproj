@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Marshalling.cpp" />
     <ClCompile Include="Wrapper\Archive.cpp" />
     <ClCompile Include="Wrapper\Map.cpp" />
     <ClCompile Include="Wrapper\OP2BmpLoader.cpp" />
@@ -158,6 +159,9 @@
     <ProjectReference Include="..\OP2Utility\OP2Utility.vcxproj">
       <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Marshalling.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,9 +1,10 @@
 #include "OP2Utility/include/OP2Utility.h"
 
+#include "Marshalling.h"
+
 #ifndef EXPORT
 #define EXPORT __declspec(dllexport)
 #endif
-
 
 extern "C"
 {
@@ -43,7 +44,7 @@ extern "C"
 
 	// Listing of all tile set sources associated with the map.
 	extern EXPORT unsigned __int64 __stdcall Map_GetTilesetSourceCount(Map* map)										{ return map->tilesetSources.size();			}
-	extern EXPORT const char* __stdcall Map_GetTilesetSourceFilename(Map* map, int index)								{ return map->tilesetSources[index].tilesetFilename.c_str();	}
+	extern EXPORT const char* __stdcall Map_GetTilesetSourceFilename(Map* map, int index)								{ return GetCStrFromString(map->tilesetSources[index].tilesetFilename);	}
 	extern EXPORT unsigned int __stdcall Map_GetTilesetSourceNumTiles(Map* map, int index)								{ return map->tilesetSources[index].numTiles;	}
 	extern EXPORT void __stdcall Map_SetTilesetSourceFilename(Map* map, int index, const char* tilesetFilename)			{ map->tilesetSources[index].tilesetFilename = tilesetFilename;	}
 	extern EXPORT void __stdcall Map_SetTilesetSourceNumTiles(Map* map, int index, int numTiles)						{ map->tilesetSources[index].numTiles = numTiles;				}
@@ -97,7 +98,7 @@ extern "C"
 	
 	//std::vector<TileGroup> tileGroups;
 	extern EXPORT unsigned __int64 __stdcall Map_GetTileGroupCount(Map* map)											{ return map->tileGroups.size();								}
-	extern EXPORT const char* __stdcall Map_GetTileGroupName(Map* map, int index)										{ return map->tileGroups[index].name.c_str();					}
+	extern EXPORT const char* __stdcall Map_GetTileGroupName(Map* map, int index)										{ return GetCStrFromString(map->tileGroups[index].name);		}
 	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileWidth(Map* map, int index)									{ return map->tileGroups[index].tileWidth;						}
 	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileHeight(Map* map, int index)								{ return map->tileGroups[index].tileHeight;						}
 

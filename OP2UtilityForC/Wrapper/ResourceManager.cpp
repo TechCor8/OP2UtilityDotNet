@@ -1,23 +1,10 @@
 #include "OP2Utility/include/OP2Utility.h"
 
+#include "Marshalling.h"
+
 #ifndef EXPORT
 #define EXPORT __declspec(dllexport)
 #endif
-
-std::string JoinStringVector(std::vector<std::string> vStrings, std::string delimiter)
-{
-	std::string result;
-
-	for (std::vector<std::string>::const_iterator i = vStrings.begin(); i != vStrings.end(); ++i)
-	{
-		if (i == vStrings.begin())
-			result += *i;
-		else
-			result += delimiter + *i;
-	}
-
-	return result;
-}
 
 extern "C"
 {
@@ -29,7 +16,7 @@ extern "C"
 		std::vector<std::string> vFilenames = resourceManager->GetAllFilenames(filenameRegexStr, accessArchives);
 
 		// Filenames are compiled into pipe delimited string
-		return JoinStringVector(vFilenames, "|").c_str();
+		return GetCStrFromString(JoinStringVector(vFilenames, "|"));
 	}
 
 	extern EXPORT const char* __stdcall ResourceManager_GetAllFilenamesOfType(ResourceManager* resourceManager, const char* extension, bool accessArchives)
@@ -37,13 +24,13 @@ extern "C"
 		std::vector<std::string> vFilenames = resourceManager->GetAllFilenamesOfType(extension, accessArchives);
 
 		// Filenames are compiled into pipe delimited string
-		return JoinStringVector(vFilenames, "|").c_str();
+		return GetCStrFromString(JoinStringVector(vFilenames, "|"));
 	}
 
 	// Returns an empty string if file is not located in an archive file in the ResourceManager's working directory.
 	extern EXPORT const char* __stdcall ResourceManager_FindContainingArchivePath(ResourceManager* resourceManager, const char* filename)
 	{
-		return resourceManager->FindContainingArchivePath(filename).c_str();
+		return GetCStrFromString(resourceManager->FindContainingArchivePath(filename));
 	}
 
 	// Returns a list of all loaded archives
@@ -52,7 +39,7 @@ extern "C"
 		std::vector<std::string> vFilenames = resourceManager->GetArchiveFilenames();
 
 		// Filenames are compiled into pipe delimited string
-		return JoinStringVector(vFilenames, "|").c_str();
+		return GetCStrFromString(JoinStringVector(vFilenames, "|"));
 	}
 
 	extern EXPORT unsigned __int64 __stdcall ResourceManager_GetResourceSize(ResourceManager* resourceManager, const char* filename, bool accessArchives)

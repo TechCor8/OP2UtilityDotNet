@@ -18,5 +18,9 @@
     <ClCompile Include="Wrapper\OP2BmpLoader.cpp">
       <Filter>Wrapper</Filter>
     </ClCompile>
+    <ClCompile Include="Marshalling.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Marshalling.h" />
   </ItemGroup>
 </Project>

@@ -12,23 +12,29 @@ namespace OP2UtilityDotNet
 
 		public string[] GetAllFilenames(string filenameRegexStr, bool accessArchives)
 		{
-			return ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives).Split('|');
+			return Marshal.PtrToStringAnsi(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
 		public string[] GetAllFilenamesOfType(string filenameRegexStr, bool accessArchives)
 		{
-			return ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives).Split('|');
+			return Marshal.PtrToStringAnsi(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
 		/// <summary>
 		/// Returns an empty string if file is not located in an archive file in the ResourceManager's working directory.
 		/// </summary>
-		public string FindContainingArchivePath(string filename)						{ return ResourceManager_FindContainingArchivePath(m_ResourceManagerPtr, filename);			}
+		public string FindContainingArchivePath(string filename)
+		{
+			return Marshal.PtrToStringAnsi(ResourceManager_FindContainingArchivePath(m_ResourceManagerPtr, filename));
+		}
 
 		/// <summary>
 		/// Returns a list of all loaded archives
 		/// </summary>
-		public string[] GetArchiveFilenames()											{ return ResourceManager_GetArchiveFilenames(m_ResourceManagerPtr).Split('|');				}
+		public string[] GetArchiveFilenames()
+		{
+			return Marshal.PtrToStringAnsi(ResourceManager_GetArchiveFilenames(m_ResourceManagerPtr)).Split('|');
+		}
 
 		public ulong GetResourceSize(string filename, bool accessArchives)				{ return ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);	}
 
@@ -50,12 +56,12 @@ namespace OP2UtilityDotNet
 		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_Create(string archiveDirectory);
 		[DllImport(Platform.DLLPath)] private static extern void ResourceManager_Release(IntPtr resourceManager);
 
-		[DllImport(Platform.DLLPath)] private static extern string ResourceManager_GetAllFilenames(IntPtr resourceManager, string filenameRegexStr, bool accessArchives);
-		[DllImport(Platform.DLLPath)] private static extern string ResourceManager_GetAllFilenamesOfType(IntPtr resourceManager, string extension, bool accessArchives);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetAllFilenames(IntPtr resourceManager, string filenameRegexStr, bool accessArchives);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetAllFilenamesOfType(IntPtr resourceManager, string extension, bool accessArchives);
 
-		[DllImport(Platform.DLLPath)] private static extern string ResourceManager_FindContainingArchivePath(IntPtr resourceManager, string filename);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_FindContainingArchivePath(IntPtr resourceManager, string filename);
 
-		[DllImport(Platform.DLLPath)] private static extern string ResourceManager_GetArchiveFilenames(IntPtr resourceManager);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetArchiveFilenames(IntPtr resourceManager);
 		[DllImport(Platform.DLLPath)] private static extern ulong ResourceManager_GetResourceSize(IntPtr resourceManager, string filename, bool accessArchives);
 		[DllImport(Platform.DLLPath)] private static extern void ResourceManager_GetResource(IntPtr resourceManager, string filename, bool accessArchives, IntPtr buffer);
 	}
