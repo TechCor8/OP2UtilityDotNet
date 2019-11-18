@@ -27,10 +27,10 @@ extern "C"
 
 	// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
 	extern EXPORT unsigned __int64 __stdcall Map_GetTileCount(Map* map)													{ return map->tiles.size();						}
-	extern EXPORT int __stdcall Map_GetTile(Map* map, int index)														{ return *(int*)&(map->tiles[index]);			}
-	extern EXPORT void __stdcall Map_SetTile(Map* map, int index, int tile)												{ map->tiles[index] = *(Tile*)&tile;			}
+	extern EXPORT int __stdcall Map_GetTile(Map* map, unsigned __int64 index)											{ return *(int*)&(map->tiles[index]);			}
+	extern EXPORT void __stdcall Map_SetTile(Map* map, unsigned __int64 index, int tile)								{ map->tiles[index] = *(Tile*)&tile;			}
 	extern EXPORT void __stdcall Map_AddTile(Map* map, int tile)														{ map->tiles.push_back(*(Tile*)&tile);			}
-	extern EXPORT void __stdcall Map_RemoveTile(Map* map, int index)													{ map->tiles.erase(map->tiles.begin()+index);	}
+	extern EXPORT void __stdcall Map_RemoveTile(Map* map, unsigned __int64 index)										{ map->tiles.erase(map->tiles.begin()+index);	}
 
 	extern EXPORT int __stdcall Map_GetClipRectX1(Map* map)																{ return map->clipRect.x1;						}
 	extern EXPORT int __stdcall Map_GetClipRectX2(Map* map)																{ return map->clipRect.x2;						}
@@ -44,10 +44,10 @@ extern "C"
 
 	// Listing of all tile set sources associated with the map.
 	extern EXPORT unsigned __int64 __stdcall Map_GetTilesetSourceCount(Map* map)										{ return map->tilesetSources.size();			}
-	extern EXPORT const char* __stdcall Map_GetTilesetSourceFilename(Map* map, int index)								{ return GetCStrFromString(map->tilesetSources[index].tilesetFilename);	}
-	extern EXPORT unsigned int __stdcall Map_GetTilesetSourceNumTiles(Map* map, int index)								{ return map->tilesetSources[index].numTiles;	}
-	extern EXPORT void __stdcall Map_SetTilesetSourceFilename(Map* map, int index, const char* tilesetFilename)			{ map->tilesetSources[index].tilesetFilename = tilesetFilename;	}
-	extern EXPORT void __stdcall Map_SetTilesetSourceNumTiles(Map* map, int index, int numTiles)						{ map->tilesetSources[index].numTiles = numTiles;				}
+	extern EXPORT const char* __stdcall Map_GetTilesetSourceFilename(Map* map, unsigned __int64 index)					{ return GetCStrFromString(map->tilesetSources[index].tilesetFilename);	}
+	extern EXPORT unsigned int __stdcall Map_GetTilesetSourceNumTiles(Map* map, unsigned __int64 index)					{ return map->tilesetSources[index].numTiles;	}
+	extern EXPORT void __stdcall Map_SetTilesetSourceFilename(Map* map, unsigned __int64 index, const char* tilesetFilename){ map->tilesetSources[index].tilesetFilename = tilesetFilename;	}
+	extern EXPORT void __stdcall Map_SetTilesetSourceNumTiles(Map* map, unsigned __int64 index, int numTiles)			{ map->tilesetSources[index].numTiles = numTiles;				}
 	extern EXPORT void __stdcall Map_AddTilesetSource(Map* map, const char* tilesetFilename, int numTiles)
 	{
 		TilesetSource src;
@@ -55,11 +55,11 @@ extern "C"
 		src.numTiles = numTiles;
 		map->tilesetSources.push_back(src);
 	}
-	extern EXPORT void __stdcall Map_RemoveTilesetSource(Map* map, int index)											{ map->tilesetSources.erase(map->tilesetSources.begin()+index);	}
+	extern EXPORT void __stdcall Map_RemoveTilesetSource(Map* map, unsigned __int64 index)								{ map->tilesetSources.erase(map->tilesetSources.begin()+index);	}
 
 	// Metadata about each available tile from the tile set sources.
 	extern EXPORT unsigned __int64 __stdcall Map_GetTileMappingCount(Map* map)											{ return map->tileMappings.size();							}
-	extern EXPORT unsigned __int64 __stdcall Map_GetTileMapping(Map* map, int index)
+	extern EXPORT unsigned __int64 __stdcall Map_GetTileMapping(Map* map, unsigned __int64 index)
 	{
 		TileMapping mapping = map->tileMappings[index];
 		unsigned __int64 val;
@@ -70,7 +70,7 @@ extern "C"
 
 		return val;
 	}
-	extern EXPORT void __stdcall Map_SetTileMapping(Map* map, int index, unsigned __int64 tileMapping)
+	extern EXPORT void __stdcall Map_SetTileMapping(Map* map, unsigned __int64 index, unsigned __int64 tileMapping)
 	{
 		map->tileMappings[index].tilesetIndex = (tileMapping >> 48);
 		map->tileMappings[index].tileGraphicIndex = (uint16_t)(tileMapping >> 32);
@@ -87,40 +87,40 @@ extern "C"
 
 		map->tileMappings.push_back(mapping);
 	}
-	extern EXPORT void __stdcall Map_RemoveTileMapping(Map* map, int index)												{ map->tileMappings.erase(map->tileMappings.begin()+index);	}
+	extern EXPORT void __stdcall Map_RemoveTileMapping(Map* map, unsigned __int64 index)								{ map->tileMappings.erase(map->tileMappings.begin()+index);	}
 
 	// Listing of properties grouped by terrain type. Properties apply to a given range of tiles.
 	extern EXPORT unsigned __int64 __stdcall Map_GetTerrainTypeCount(Map* map)											{ return map->terrainTypes.size();							}
-	extern EXPORT TerrainType* __stdcall Map_GetTerrainType(Map* map, int index)										{ return &map->terrainTypes[index];							}
-	extern EXPORT void __stdcall Map_SetTerrainType(Map* map, int index, TerrainType* terrainType)						{ map->terrainTypes[index] = *terrainType;					}
+	extern EXPORT TerrainType* __stdcall Map_GetTerrainType(Map* map, unsigned __int64 index)							{ return &map->terrainTypes[index];							}
+	extern EXPORT void __stdcall Map_SetTerrainType(Map* map, unsigned __int64 index, TerrainType* terrainType)			{ map->terrainTypes[index] = *terrainType;					}
 	extern EXPORT void __stdcall Map_AddTerrainType(Map* map, TerrainType* terrainType)									{ map->terrainTypes.push_back(*terrainType);				}
-	extern EXPORT void __stdcall Map_RemoveTerrainType(Map* map, int index)												{ map->terrainTypes.erase(map->terrainTypes.begin()+index);	}
+	extern EXPORT void __stdcall Map_RemoveTerrainType(Map* map, unsigned __int64 index)								{ map->terrainTypes.erase(map->terrainTypes.begin()+index);	}
 	
 	//std::vector<TileGroup> tileGroups;
 	extern EXPORT unsigned __int64 __stdcall Map_GetTileGroupCount(Map* map)											{ return map->tileGroups.size();								}
-	extern EXPORT const char* __stdcall Map_GetTileGroupName(Map* map, int index)										{ return GetCStrFromString(map->tileGroups[index].name);		}
-	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileWidth(Map* map, int index)									{ return map->tileGroups[index].tileWidth;						}
-	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileHeight(Map* map, int index)								{ return map->tileGroups[index].tileHeight;						}
+	extern EXPORT const char* __stdcall Map_GetTileGroupName(Map* map, unsigned __int64 index)							{ return GetCStrFromString(map->tileGroups[index].name);		}
+	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileWidth(Map* map, unsigned __int64 index)					{ return map->tileGroups[index].tileWidth;						}
+	extern EXPORT unsigned int __stdcall Map_GetTileGroupTileHeight(Map* map, unsigned __int64 index)					{ return map->tileGroups[index].tileHeight;						}
 
-	extern EXPORT unsigned __int64 __stdcall Map_GetTileGroupMappingIndexCount(Map* map, int tileGroupIndex)			{ return map->tileGroups[tileGroupIndex].mappingIndices.size();			}
-	extern EXPORT unsigned int __stdcall Map_GetTileGroupMappingIndex(Map* map, int tileGroupIndex, int mappingIndex)	{ return map->tileGroups[tileGroupIndex].mappingIndices[mappingIndex];	}
-	extern EXPORT void __stdcall Map_SetTileGroupMappingIndex(Map* map, int tileGroupIndex, int mappingIndex, unsigned int value){ map->tileGroups[tileGroupIndex].mappingIndices[mappingIndex] = value;	}
-	extern EXPORT void __stdcall Map_AddTileGroupMappingIndex(Map* map, int tileGroupIndex, unsigned int value)			{ map->tileGroups[tileGroupIndex].mappingIndices.push_back(value);		}
-	extern EXPORT void __stdcall Map_RemoveTileGroupMappingIndex(Map* map, int tileGroupIndex, int mappingIndex)
+	extern EXPORT unsigned __int64 __stdcall Map_GetTileGroupMappingIndexCount(Map* map, unsigned __int64 tileGroupIndex)									{ return map->tileGroups[tileGroupIndex].mappingIndices.size();			}
+	extern EXPORT unsigned int __stdcall Map_GetTileGroupMappingIndex(Map* map, unsigned __int64 tileGroupIndex, unsigned __int64 mappingIndex)				{ return map->tileGroups[tileGroupIndex].mappingIndices[mappingIndex];	}
+	extern EXPORT void __stdcall Map_SetTileGroupMappingIndex(Map* map, unsigned __int64 tileGroupIndex, unsigned __int64 mappingIndex, unsigned int value)	{ map->tileGroups[tileGroupIndex].mappingIndices[mappingIndex] = value;	}
+	extern EXPORT void __stdcall Map_AddTileGroupMappingIndex(Map* map, unsigned __int64 tileGroupIndex, unsigned int value)								{ map->tileGroups[tileGroupIndex].mappingIndices.push_back(value);		}
+	extern EXPORT void __stdcall Map_RemoveTileGroupMappingIndex(Map* map, unsigned __int64 tileGroupIndex, unsigned __int64 mappingIndex)
 	{
 		map->tileGroups[tileGroupIndex].mappingIndices.erase( map->tileGroups[tileGroupIndex].mappingIndices.begin()+mappingIndex);
 	}
 
-	extern EXPORT void __stdcall Map_SetTileGroupName(Map* map, int index, const char* groupName)						{ map->tileGroups[index].name = groupName;						}
-	extern EXPORT void __stdcall Map_SetTileGroupTileWidth(Map* map, int index, unsigned int tileWidth)					{ map->tileGroups[index].tileWidth = tileWidth;					}
-	extern EXPORT void __stdcall Map_SetTileGroupTileHeight(Map* map, int index, unsigned int tileHeight)				{ map->tileGroups[index].tileHeight = tileHeight;				}
+	extern EXPORT void __stdcall Map_SetTileGroupName(Map* map, unsigned __int64 index, const char* groupName)			{ map->tileGroups[index].name = groupName;						}
+	extern EXPORT void __stdcall Map_SetTileGroupTileWidth(Map* map, unsigned __int64 index, unsigned int tileWidth)	{ map->tileGroups[index].tileWidth = tileWidth;					}
+	extern EXPORT void __stdcall Map_SetTileGroupTileHeight(Map* map, unsigned __int64 index, unsigned int tileHeight)	{ map->tileGroups[index].tileHeight = tileHeight;				}
 	extern EXPORT unsigned __int64 __stdcall Map_AddTileGroup(Map* map)
 	{
 		TileGroup group;
 		map->tileGroups.push_back(group);
 		return map->tileGroups.size()-1;
 	}
-	extern EXPORT void __stdcall Map_RemoveTileGroup(Map* map, int index)											{ map->tileGroups.erase(map->tileGroups.begin()+index);			}
+	extern EXPORT void __stdcall Map_RemoveTileGroup(Map* map, unsigned __int64 index)									{ map->tileGroups.erase(map->tileGroups.begin()+index);			}
 
 	extern EXPORT void __stdcall Map_Write(Map* map, const char* filename)												{ return map->Write(filename);					}
 	//void Write(Stream::Writer& streamWriter) const;

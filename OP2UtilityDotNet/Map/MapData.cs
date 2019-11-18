@@ -40,7 +40,7 @@ namespace OP2UtilityDotNet
 	}
 
 	// Outpost 2 Tile metadata. Implemented as a Bitfield structure (32 bits total)
-	public class Tile
+	public class OP2Tile
 	{
 		public int _tile;
 
@@ -56,7 +56,7 @@ namespace OP2UtilityDotNet
 			_tile |= value << (32-(offset+count));
 		}
 
-		public Tile(int tile)
+		public OP2Tile(int tile)
 		{
 			_tile = tile;
 		}

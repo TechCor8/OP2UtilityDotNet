@@ -39,10 +39,10 @@ namespace OP2UtilityDotNet
 
 		// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
 		public ulong GetTileCount()						{ return Map_GetTileCount(m_MapPtr);											}
-		public Tile GetTile(int index)					{ return new Tile(Map_GetTile(m_MapPtr, index));								}
-		public void SetTile(int index, Tile tile)		{ Map_SetTile(m_MapPtr, index, tile._tile);										}
-		public void AddTile(Tile tile)					{ Map_AddTile(m_MapPtr, tile._tile);											}
-		public void RemoveTile(int index)				{ Map_RemoveTile(m_MapPtr, index);												}
+		public OP2Tile GetTile(ulong index)				{ return new OP2Tile(Map_GetTile(m_MapPtr, index));								}
+		public void SetTile(ulong index, OP2Tile tile)		{ Map_SetTile(m_MapPtr, index, tile._tile);										}
+		public void AddTile(OP2Tile tile)					{ Map_AddTile(m_MapPtr, tile._tile);											}
+		public void RemoveTile(ulong index)				{ Map_RemoveTile(m_MapPtr, index);												}
 
 		/**
 		 * \brief	Represents the visible areas of the map.
@@ -58,16 +58,16 @@ namespace OP2UtilityDotNet
 
 		// Listing of all tile set sources associated with the map.
 		public ulong GetTilesetSourceCount()											{ return Map_GetTilesetSourceCount(m_MapPtr);										}
-		public string GetTilesetSourceFilename(int index)								{ return Marshalling.GetString(Map_GetTilesetSourceFilename(m_MapPtr, index));		}
-		public uint GetTilesetSourceNumTiles(int index)									{ return Map_GetTilesetSourceNumTiles(m_MapPtr, index);								}
-		public void SetTilesetSourceFilename(int index, string tilesetFilename)			{ Map_SetTilesetSourceFilename(m_MapPtr, index, tilesetFilename);					}
-		public void SetTilesetSourceNumTiles(int index, int numTiles)					{ Map_SetTilesetSourceNumTiles(m_MapPtr, index, numTiles);							}
+		public string GetTilesetSourceFilename(ulong index)								{ return Marshalling.GetString(Map_GetTilesetSourceFilename(m_MapPtr, index));		}
+		public uint GetTilesetSourceNumTiles(ulong index)								{ return Map_GetTilesetSourceNumTiles(m_MapPtr, index);								}
+		public void SetTilesetSourceFilename(ulong index, string tilesetFilename)		{ Map_SetTilesetSourceFilename(m_MapPtr, index, tilesetFilename);					}
+		public void SetTilesetSourceNumTiles(ulong index, int numTiles)					{ Map_SetTilesetSourceNumTiles(m_MapPtr, index, numTiles);							}
 		public void AddTilesetSource(string tilesetFilename, int numTiles)				{ Map_AddTilesetSource(m_MapPtr, tilesetFilename, numTiles);						}
-		public void RemoveTilesetSource(int index)										{ Map_RemoveTilesetSource(m_MapPtr, index);											}
+		public void RemoveTilesetSource(ulong index)									{ Map_RemoveTilesetSource(m_MapPtr, index);											}
 
 		// Metadata about each available tile from the tile set sources.
 		public ulong GetTileMappingCount()												{ return Map_GetTileMappingCount(m_MapPtr);											}
-		public TileMapping GetTileMapping(int index)
+		public TileMapping GetTileMapping(ulong index)
 		{
 			ulong val = Map_GetTileMapping(m_MapPtr, index);
 			TileMapping mapping = new TileMapping();
@@ -78,7 +78,7 @@ namespace OP2UtilityDotNet
 
 			return mapping;
 		}
-		public void SetTileMapping(int index, TileMapping mapping)
+		public void SetTileMapping(ulong index, TileMapping mapping)
 		{
 			ulong val;
 			val = (ulong)mapping.tilesetIndex << 48;
@@ -98,17 +98,17 @@ namespace OP2UtilityDotNet
 
 			Map_AddTileMapping(m_MapPtr, val);
 		}
-		public void RemoveTileMapping(int index)										{ Map_RemoveTileMapping(m_MapPtr, index);								}
+		public void RemoveTileMapping(ulong index)										{ Map_RemoveTileMapping(m_MapPtr, index);								}
 
 		// Listing of properties grouped by terrain type. Properties apply to a given range of tiles.
 		public ulong GetTerrainTypeCount()												{ return Map_GetTerrainTypeCount(m_MapPtr);								}
-		public TerrainType GetTerrainType(int index)
+		public TerrainType GetTerrainType(ulong index)
 		{
 			IntPtr terrainTypePtr = Map_GetTerrainType(m_MapPtr, index);
 			TerrainType terrainType = Marshal.PtrToStructure<TerrainType>(terrainTypePtr);
 			return terrainType;
 		}
-		public void SetTerrainType(int index, TerrainType terrainType)
+		public void SetTerrainType(ulong index, TerrainType terrainType)
 		{
 			IntPtr ptr = Marshal.AllocHGlobal(Marshal.SizeOf<TerrainType>());
 			Marshal.StructureToPtr(terrainType, ptr, false);
@@ -126,25 +126,25 @@ namespace OP2UtilityDotNet
 
 			Marshal.FreeHGlobal(ptr);
 		}
-		public void RemoveTerrainType(int index)										{ Map_RemoveTerrainType(m_MapPtr, index);											}
+		public void RemoveTerrainType(ulong index)										{ Map_RemoveTerrainType(m_MapPtr, index);											}
 
 		//std::vector<TileGroup> tileGroups;
 		public ulong GetTileGroupCount()												{ return Map_GetTileGroupCount(m_MapPtr);											}
-		public string GetTileGroupName(int index)										{ return Marshalling.GetString(Map_GetTileGroupName(m_MapPtr, index));				}
-		public uint GetTileGroupTileWidth(int index)									{ return Map_GetTileGroupTileWidth(m_MapPtr, index);								}
-		public uint GetTileGroupTileHeight(int index)									{ return Map_GetTileGroupTileHeight(m_MapPtr, index);								}
+		public string GetTileGroupName(ulong index)										{ return Marshalling.GetString(Map_GetTileGroupName(m_MapPtr, index));				}
+		public uint GetTileGroupTileWidth(ulong index)									{ return Map_GetTileGroupTileWidth(m_MapPtr, index);								}
+		public uint GetTileGroupTileHeight(ulong index)									{ return Map_GetTileGroupTileHeight(m_MapPtr, index);								}
 
-		public ulong GetTileGroupMappingIndexCount(int tileGroupIndex)					{ return Map_GetTileGroupMappingIndexCount(m_MapPtr, tileGroupIndex);				}
-		public uint GetTileGroupMappingIndex(int tileGroupIndex, int mappingIndex)		{ return Map_GetTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex);		}
-		public void SetTileGroupMappingIndex(int tileGroupIndex, int mappingIndex, uint val){ Map_SetTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex, val);	}
-		public void AddTileGroupMappingIndex(int tileGroupIndex, uint val)				{ Map_AddTileGroupMappingIndex(m_MapPtr, tileGroupIndex, val);						}
-		public void RemoveTileGroupMappingIndex(int tileGroupIndex, int mappingIndex)	{ Map_RemoveTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex);			}
+		public ulong GetTileGroupMappingIndexCount(ulong tileGroupIndex)				{ return Map_GetTileGroupMappingIndexCount(m_MapPtr, tileGroupIndex);				}
+		public uint GetTileGroupMappingIndex(ulong tileGroupIndex, ulong mappingIndex)	{ return Map_GetTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex);		}
+		public void SetTileGroupMappingIndex(ulong tileGroupIndex, ulong mappingIndex, uint val){ Map_SetTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex, val);}
+		public void AddTileGroupMappingIndex(ulong tileGroupIndex, uint val)			{ Map_AddTileGroupMappingIndex(m_MapPtr, tileGroupIndex, val);						}
+		public void RemoveTileGroupMappingIndex(ulong tileGroupIndex, ulong mappingIndex){ Map_RemoveTileGroupMappingIndex(m_MapPtr, tileGroupIndex, mappingIndex);			}
 
-		public void SetTileGroupName(int tileGroupIndex, string groupName)				{ Map_SetTileGroupName(m_MapPtr, tileGroupIndex, groupName);						}
-		public void SetTileGroupTileWidth(int tileGroupIndex, uint tileWidth)			{ Map_SetTileGroupTileWidth(m_MapPtr, tileGroupIndex, tileWidth);					}
-		public void SetTileGroupTileHeight(int tileGroupIndex, uint tileHeight)			{ Map_SetTileGroupTileHeight(m_MapPtr, tileGroupIndex, tileHeight);					}
-		public ulong AddTileGroup(int tileGroupIndex)									{ return Map_AddTileGroup(m_MapPtr);												} // Ret: new index
-		public void RemoveTileGroup(int tileGroupIndex)									{ Map_RemoveTileGroup(m_MapPtr, tileGroupIndex);									}
+		public void SetTileGroupName(ulong tileGroupIndex, string groupName)			{ Map_SetTileGroupName(m_MapPtr, tileGroupIndex, groupName);						}
+		public void SetTileGroupTileWidth(ulong tileGroupIndex, uint tileWidth)			{ Map_SetTileGroupTileWidth(m_MapPtr, tileGroupIndex, tileWidth);					}
+		public void SetTileGroupTileHeight(ulong tileGroupIndex, uint tileHeight)		{ Map_SetTileGroupTileHeight(m_MapPtr, tileGroupIndex, tileHeight);					}
+		public ulong AddTileGroup(ulong tileGroupIndex)									{ return Map_AddTileGroup(m_MapPtr);												} // Ret: new index
+		public void RemoveTileGroup(ulong tileGroupIndex)								{ Map_RemoveTileGroup(m_MapPtr, tileGroupIndex);									}
 
 		public void Write(string filename)												{ Map_Write(m_MapPtr, filename);													}
 		
@@ -177,10 +177,10 @@ namespace OP2UtilityDotNet
 
 		// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetTile(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTile(IntPtr map, int index, int tile);
+		[DllImport(Platform.DLLPath)] private static extern int Map_GetTile(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTile(IntPtr map, ulong index, int tile);
 		[DllImport(Platform.DLLPath)] private static extern void Map_AddTile(IntPtr map, int tile);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTile(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTile(IntPtr map, ulong index);
 
 		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectX1(IntPtr map);
 		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectX2(IntPtr map);
@@ -194,44 +194,44 @@ namespace OP2UtilityDotNet
 
 		// Listing of all tile set sources associated with the map.
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTilesetSourceCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTilesetSourceFilename(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTilesetSourceNumTiles(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceFilename(IntPtr map, int index, string tilesetFilename);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceNumTiles(IntPtr map, int index, int numTiles);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTilesetSourceFilename(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTilesetSourceNumTiles(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceFilename(IntPtr map, ulong index, string tilesetFilename);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceNumTiles(IntPtr map, ulong index, int numTiles);
 		[DllImport(Platform.DLLPath)] private static extern void Map_AddTilesetSource(IntPtr map, string tilesetFilename, int numTiles);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTilesetSource(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTilesetSource(IntPtr map, ulong index);
 
 		// Metadata about each available tile from the tile set sources.
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMappingCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMapping(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileMapping(IntPtr map, int index, ulong tileMapping);
+		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMapping(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileMapping(IntPtr map, ulong index, ulong tileMapping);
 		[DllImport(Platform.DLLPath)] private static extern void Map_AddTileMapping(IntPtr map, ulong tileMapping);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileMapping(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileMapping(IntPtr map, ulong index);
 
 		// Listing of properties grouped by terrain type. Properties apply to a given range of tiles.
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTerrainTypeCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTerrainType(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTerrainType(IntPtr map, int index, IntPtr terrainType);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTerrainType(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTerrainType(IntPtr map, ulong index, IntPtr terrainType);
 		[DllImport(Platform.DLLPath)] private static extern void Map_AddTerrainType(IntPtr map, IntPtr terrainType);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTerrainType(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTerrainType(IntPtr map, ulong index);
 
 		//std::vector<TileGroup> tileGroups;
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileGroupCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTileGroupName(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileWidth(IntPtr map, int index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileHeight(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTileGroupName(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileWidth(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileHeight(IntPtr map, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileGroupMappingIndexCount(IntPtr map, int tileGroupIndex);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupMappingIndex(IntPtr map, int tileGroupIndex, int mappingIndex);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupMappingIndex(IntPtr map, int tileGroupIndex, int mappingIndex, uint value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTileGroupMappingIndex(IntPtr map, int tileGroupIndex, uint value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroupMappingIndex(IntPtr map, int tileGroupIndex, int mappingIndex);
+		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileGroupMappingIndexCount(IntPtr map, ulong tileGroupIndex);
+		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex, uint value);
+		[DllImport(Platform.DLLPath)] private static extern void Map_AddTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, uint value);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupName(IntPtr map, int index, string groupName);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileWidth(IntPtr map, int index, uint tileWidth);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileHeight(IntPtr map, int index, uint tileHeight);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupName(IntPtr map, ulong index, string groupName);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileWidth(IntPtr map, ulong index, uint tileWidth);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileHeight(IntPtr map, ulong index, uint tileHeight);
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_AddTileGroup(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroup(IntPtr map, int index);
+		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroup(IntPtr map, ulong index);
 
 		[DllImport(Platform.DLLPath)] private static extern void Map_Write(IntPtr map, string filename);
 		
