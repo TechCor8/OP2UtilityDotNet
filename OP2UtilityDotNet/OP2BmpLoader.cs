@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace OP2UtilityDotNet
 {
-	class OP2BmpLoader : IDisposable
+	public class OP2BmpLoader : IDisposable
 	{
 		protected IntPtr m_BmpLoaderPtr;
 

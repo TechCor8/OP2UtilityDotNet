@@ -41,9 +41,13 @@ namespace OP2UtilityDotNet
 		public byte[] GetResource(string filename, bool accessArchives)
 		{
 			int size = (int)ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);
+			if (size == 0) return null;
+
 			IntPtr buffer = Marshal.AllocHGlobal(size);
 
-			ResourceManager_GetResource(m_ResourceManagerPtr, filename, accessArchives, buffer);
+			if (!ResourceManager_GetResource(m_ResourceManagerPtr, filename, accessArchives, buffer))
+				return null;
+
 			byte[] file = new byte[size];
 			Marshal.Copy(buffer, file, 0, size);
 
@@ -63,6 +67,6 @@ namespace OP2UtilityDotNet
 
 		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetArchiveFilenames(IntPtr resourceManager);
 		[DllImport(Platform.DLLPath)] private static extern ulong ResourceManager_GetResourceSize(IntPtr resourceManager, string filename, bool accessArchives);
-		[DllImport(Platform.DLLPath)] private static extern void ResourceManager_GetResource(IntPtr resourceManager, string filename, bool accessArchives, IntPtr buffer);
+		[DllImport(Platform.DLLPath)] private static extern bool ResourceManager_GetResource(IntPtr resourceManager, string filename, bool accessArchives, IntPtr buffer);
 	}
 }

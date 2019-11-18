@@ -29,7 +29,12 @@ namespace OP2UtilityDotNet
 			int size = (int)GetSize(index);
 			IntPtr buffer = Marshal.AllocHGlobal(size);
 
-			Archive_ReadFileByIndex(m_ArchivePtr, index, buffer);
+			if (!Archive_ReadFileByIndex(m_ArchivePtr, index, buffer))
+			{
+				Marshal.FreeHGlobal(buffer);
+				return null;
+			}
+
 			byte[] file = new byte[size];
 			Marshal.Copy(buffer, file, 0, size);
 
@@ -54,6 +59,6 @@ namespace OP2UtilityDotNet
 		[DllImport(Platform.DLLPath)] private static extern void Archive_ExtractFileByIndex(IntPtr archive, ulong index, string pathOut);
 		[DllImport(Platform.DLLPath)] private static extern void Archive_ExtractAllFiles(IntPtr archive, string destDirectory);
 
-		[DllImport(Platform.DLLPath)] private static extern void Archive_ReadFileByIndex(IntPtr archive, ulong index, IntPtr buffer);
+		[DllImport(Platform.DLLPath)] private static extern bool Archive_ReadFileByIndex(IntPtr archive, ulong index, IntPtr buffer);
 	}
 }

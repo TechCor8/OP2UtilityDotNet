@@ -45,14 +45,22 @@ extern "C"
 	extern EXPORT unsigned __int64 __stdcall ResourceManager_GetResourceSize(ResourceManager* resourceManager, const char* filename, bool accessArchives)
 	{
 		std::unique_ptr<Stream::BidirectionalReader> stream = resourceManager->GetResourceStream(filename, accessArchives);
+		
+		if (stream == nullptr)
+			return 0;
 
 		return stream->Length();
 	}
 
-	extern EXPORT void __stdcall ResourceManager_GetResource(ResourceManager* resourceManager, const char* filename, bool accessArchives, char* buffer)
+	extern EXPORT bool __stdcall ResourceManager_GetResource(ResourceManager* resourceManager, const char* filename, bool accessArchives, void* buffer)
 	{
 		std::unique_ptr<Stream::BidirectionalReader> stream = resourceManager->GetResourceStream(filename, accessArchives);
 
+		if (stream == nullptr)
+			return false;
+
 		stream->Read(buffer, stream->Length());
+
+		return true;
 	}
 }

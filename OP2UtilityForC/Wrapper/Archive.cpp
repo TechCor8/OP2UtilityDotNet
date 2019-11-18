@@ -40,11 +40,16 @@ extern "C"
 		Archive::ClmFile::CreateArchive(archiveFilename, SplitString(filesToPack, '|'));
 	}
 
-	extern EXPORT void __stdcall Archive_ReadFileByIndex(Archive::ArchiveFile* archive, unsigned __int64 index, char* buffer)
+	extern EXPORT bool __stdcall Archive_ReadFileByIndex(Archive::ArchiveFile* archive, unsigned __int64 index, char* buffer)
 	{
 		std::unique_ptr<Stream::BidirectionalReader> stream = archive->OpenStream(index);
 
+		if (stream == nullptr)
+			return false;
+
 		stream->Read(buffer, stream->Length());
+
+		return true;
 	}
 
 
