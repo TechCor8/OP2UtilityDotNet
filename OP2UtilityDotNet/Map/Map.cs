@@ -11,7 +11,15 @@ namespace OP2UtilityDotNet
 		private Map(IntPtr mapPtr)								{ m_MapPtr = mapPtr;									}
 		public void Dispose()									{ Map_Release(m_MapPtr);								}
 
-		public static Map ReadMap(string filename)				{ return new Map(Map_ReadMap(filename));				}
+		public static Map ReadMap(string filename)
+		{
+			IntPtr mapPtr = Map_ReadMap(filename);
+			if (mapPtr == IntPtr.Zero)
+				return null;
+
+			return new Map(mapPtr);
+		}
+
 		public static Map ReadMap(byte[] mapData)
 		{
 			IntPtr buffer = Marshal.AllocHGlobal(mapData.Length);
@@ -21,10 +29,21 @@ namespace OP2UtilityDotNet
 
 			Marshal.FreeHGlobal(buffer);
 
+			if (mapPtr == IntPtr.Zero)
+				return null;
+
 			return new Map(mapPtr);
 		}
 
-		public static Map ReadSavedGame(string filename)		{ return new Map(Map_ReadSavedGame(filename));			}
+		public static Map ReadSavedGame(string filename)
+		{
+			IntPtr mapPtr = Map_ReadSavedGame(filename);
+			if (mapPtr == IntPtr.Zero)
+				return null;
+
+			return new Map(mapPtr);
+		}
+
 		public static Map ReadSavedGame(byte[] mapData)
 		{
 			IntPtr buffer = Marshal.AllocHGlobal(mapData.Length);
@@ -34,14 +53,17 @@ namespace OP2UtilityDotNet
 
 			Marshal.FreeHGlobal(buffer);
 
+			if (mapPtr == IntPtr.Zero)
+				return null;
+
 			return new Map(mapPtr);
 		}
 
 		// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
 		public ulong GetTileCount()						{ return Map_GetTileCount(m_MapPtr);											}
 		public OP2Tile GetTile(ulong index)				{ return new OP2Tile(Map_GetTile(m_MapPtr, index));								}
-		public void SetTile(ulong index, OP2Tile tile)		{ Map_SetTile(m_MapPtr, index, tile._tile);										}
-		public void AddTile(OP2Tile tile)					{ Map_AddTile(m_MapPtr, tile._tile);											}
+		public void SetTile(ulong index, OP2Tile tile)	{ Map_SetTile(m_MapPtr, index, tile._tile);										}
+		public void AddTile(OP2Tile tile)				{ Map_AddTile(m_MapPtr, tile._tile);											}
 		public void RemoveTile(ulong index)				{ Map_RemoveTile(m_MapPtr, index);												}
 
 		/**

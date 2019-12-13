@@ -11,18 +11,52 @@ extern "C"
 	extern EXPORT Map* __stdcall Map_Create()																			{ return new Map();								}
 	extern EXPORT void __stdcall Map_Release(Map* map)																	{ delete map;									}
 
-	extern EXPORT Map* __stdcall Map_ReadMap(const char* filename)														{ return new Map(Map::ReadMap(filename));		}
+	extern EXPORT Map* __stdcall Map_ReadMap(const char* filename)
+	{
+		try
+		{
+			return new Map(Map::ReadMap(filename));
+		}
+		catch (...)
+		{
+			return 0;
+		}
+	}
 	extern EXPORT Map* __stdcall Map_ReadMapStream(void* buffer, unsigned __int64 size)
 	{
-		Stream::MemoryReader reader(buffer, size);
-		return new Map(Map::ReadMap(reader));
+		try
+		{
+			Stream::MemoryReader reader(buffer, size);
+			return new Map(Map::ReadMap(reader));
+		}
+		catch (...)
+		{
+			return 0;
+		}
 	}
 
-	extern EXPORT Map* __stdcall Map_ReadSavedGame(const char* filename)												{ return new Map(Map::ReadSavedGame(filename));	}
+	extern EXPORT Map* __stdcall Map_ReadSavedGame(const char* filename)
+	{
+		try
+		{
+			return new Map(Map::ReadSavedGame(filename));
+		}
+		catch (...)
+		{
+			return 0;
+		}
+	}
 	extern EXPORT Map* __stdcall Map_ReadSavedGameStream(const void* buffer, unsigned __int64 size)
 	{
-		Stream::MemoryReader reader(buffer, size);
-		return new Map(Map::ReadSavedGame(reader));
+		try
+		{
+			Stream::MemoryReader reader(buffer, size);
+			return new Map(Map::ReadSavedGame(reader));
+		}
+		catch (...)
+		{
+			return 0;
+		}
 	}
 
 	// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
