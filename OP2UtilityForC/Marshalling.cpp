@@ -9,8 +9,8 @@ const char* GetCStrFromString(std::string s)
 	const char* _str = s.c_str();
 	size_t length = strlen(_str);
 	
-	char* buffer = new char[length*2];
-	strcpy_s(buffer, length*2, _str);
+	char* buffer = new char[length*2+1];
+	strcpy_s(buffer, length*2+1, _str);
 
 	return buffer;
 }
