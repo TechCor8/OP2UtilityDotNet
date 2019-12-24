@@ -182,6 +182,10 @@ namespace OP2UtilityDotNet
 		public ulong GetTilesetIndex(ulong x, ulong y)									{ return Map_GetTilesetIndex(m_MapPtr, x, y);										}
 		public ulong GetImageIndex(ulong x, ulong y)									{ return Map_GetImageIndex(m_MapPtr, x, y);											}
 
+		public void SetTileMappingIndex(ulong x, ulong y, ulong mappingIndex)			{ Map_SetTileMappingIndex(m_MapPtr, x, y, mappingIndex);							}
+		public void SetCellType(ulong x, ulong y, CellType cellType)					{ Map_SetCellType(m_MapPtr, x, y, (int)cellType);									}
+		public void SetLavaPossible(ulong x, ulong y, bool lavaPossible)				{ Map_SetLavaPossible(m_MapPtr, x, y, lavaPossible);								}
+
 		public void CheckMinVersionTag(uint versionTag)									{ Map_CheckMinVersionTag(m_MapPtr, versionTag);										}
 
 		public void TrimTilesetSources()												{ Map_TrimTilesetSources(m_MapPtr);													}
@@ -268,6 +272,10 @@ namespace OP2UtilityDotNet
 		[DllImport(Platform.DLLPath)] private static extern bool Map_GetLavaPossible(IntPtr map, ulong x, ulong y);
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTilesetIndex(IntPtr map, ulong x, ulong y);
 		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetImageIndex(IntPtr map, ulong x, ulong y);
+
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileMappingIndex(IntPtr map, ulong x, ulong y, ulong mappingIndex);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetCellType(IntPtr map, ulong x, ulong y, int cellType);
+		[DllImport(Platform.DLLPath)] private static extern void Map_SetLavaPossible(IntPtr map, ulong x, ulong y, bool lavaPossible);
 
 		[DllImport(Platform.DLLPath)] private static extern void Map_CheckMinVersionTag(IntPtr map, uint versionTag);
 

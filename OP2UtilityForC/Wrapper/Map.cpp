@@ -6,6 +6,13 @@
 #define EXPORT __declspec(dllexport)
 #endif
 
+std::size_t GetTileIndex(std::size_t x, std::size_t y, uint32_t heightInTiles)
+{
+	auto lowerX = x & 0x1F; // ... 0001 1111
+	auto upperX = x >> 5;   // ... 1110 0000
+	return (upperX * heightInTiles + y) * 32 + lowerX;
+}
+
 extern "C"
 {
 	extern EXPORT Map* __stdcall Map_Create()																			{ return new Map();								}
@@ -170,6 +177,10 @@ extern "C"
 	extern EXPORT bool __stdcall Map_GetLavaPossible(Map* map, unsigned __int64 x, unsigned __int64 y)					{ return map->GetLavaPossible(x, y);			}
 	extern EXPORT unsigned __int64 __stdcall Map_GetTilesetIndex(Map* map, unsigned __int64 x, unsigned __int64 y)		{ return map->GetTilesetIndex(x, y);			}
 	extern EXPORT unsigned __int64 __stdcall Map_GetImageIndex(Map* map, unsigned __int64 x, unsigned __int64 y)		{ return map->GetImageIndex(x, y);				}
+
+	extern EXPORT void __stdcall Map_SetTileMappingIndex(Map* map, unsigned __int64 x, unsigned __int64 y, unsigned __int64 mappingIndex)	{ map->tiles[GetTileIndex(x, y, map->HeightInTiles())].tileMappingIndex = mappingIndex;		}
+	extern EXPORT void __stdcall Map_SetCellType(Map* map, unsigned __int64 x, unsigned __int64 y, int cellType)							{ map->tiles[GetTileIndex(x, y, map->HeightInTiles())].cellType = (CellType)cellType;		}
+	extern EXPORT void __stdcall Map_SetLavaPossible(Map* map, unsigned __int64 x, unsigned __int64 y, bool lavaPossible)					{ map->tiles[GetTileIndex(x, y, map->HeightInTiles())].bLavaPossible = lavaPossible;		}
 
 	extern EXPORT void __stdcall Map_CheckMinVersionTag(Map* map, unsigned int versionTag)								{ return map->CheckMinVersionTag(versionTag);	}
 
