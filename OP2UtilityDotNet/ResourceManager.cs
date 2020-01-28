@@ -46,7 +46,10 @@ namespace OP2UtilityDotNet
 			IntPtr buffer = Marshal.AllocHGlobal(size);
 
 			if (!ResourceManager_GetResource(m_ResourceManagerPtr, filename, accessArchives, buffer))
+			{
+				Marshal.FreeHGlobal(buffer);
 				return null;
+			}
 
 			byte[] file = new byte[size];
 			Marshal.Copy(buffer, file, 0, size);

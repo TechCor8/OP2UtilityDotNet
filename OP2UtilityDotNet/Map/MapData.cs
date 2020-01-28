@@ -107,8 +107,8 @@ namespace OP2UtilityDotNet
 	[StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack=1)]
 	public struct Range16
 	{
-		ushort start;
-		ushort end;
+		public ushort start;
+		public ushort end;
 	}
 
 	// The properties associated with a range of tiles.
@@ -116,51 +116,51 @@ namespace OP2UtilityDotNet
 	public struct TerrainType
 	{
 		// Range of tile mappings the TerrainType applies to.
-		Range16 tileMappingRange;
+		public Range16 tileMappingRange;
 
 		// The first tile mapping index that represents bulldozed versions of the terrain type.
 		// The rest of the bulldozed tiles appear consecutively after the first index.
-		ushort bulldozedTileMappingIndex;
+		public ushort bulldozedTileMappingIndex;
 
 		// The first tile mapping index of rubble for the Terrain Type range.
 		// Common rubble will be the first 4 consecutive tile mappings after index.
 		// Rare rubble will be the next 4 consecutive tile mappings.
-		ushort rubbleTileMappingIndex;
+		public ushort rubbleTileMappingIndex;
 
 		// Mapping index of tube tiles. UNKNOWN why the data is repeated.
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-		ushort[] tubeTileMappings;
+		public ushort[] tubeTileMappings;
 
 		// 5 groups of 16 tiles. Each group represents a different wall type.
 		// Lava, Microbe, Full Strength Regular, Damaged Regular, and Heavily Damaged Regular.
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 5*16)]
-		ushort[] wallTileMappingIndexes;
+		public ushort[] wallTileMappingIndexes;
 
 		// First mapping index for lava tiles in Terrain Type.
-		ushort lavaTileMappingIndex;
+		public ushort lavaTileMappingIndex;
 
 		// UNKNOWN
-		ushort flat1;
+		public ushort flat1;
 
 		// UNKNOWN
-		ushort flat2;
+		public ushort flat2;
 
 		// UNKNOWN
-		ushort flat3;
+		public ushort flat3;
 
 		// Tube tile mapping indexes associated with Terrain Type.
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-		ushort[] tubeTileMappingIndexes;
+		public ushort[] tubeTileMappingIndexes;
 
 		// Index for scorched tile within Terrain Type
 		// Scorch comes from meteor impact or vehicle destruction. Not all tiles may be scorched.
-		ushort scorchedTileMappingIndex;
+		public ushort scorchedTileMappingIndex;
 
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-		Range16[] scorchedRange;
+		public Range16[] scorchedRange;
 
 		// UNKNOWN
 		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 15)]
-		ushort[] unknown;
+		public ushort[] unknown;
 	}
 }
