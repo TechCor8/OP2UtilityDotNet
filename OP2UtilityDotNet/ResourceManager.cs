@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace OP2UtilityDotNet
@@ -7,16 +8,31 @@ namespace OP2UtilityDotNet
 	{
 		protected IntPtr m_ResourceManagerPtr;
 
-		public ResourceManager(string archiveDirectory)									{ m_ResourceManagerPtr = ResourceManager_Create(archiveDirectory);							}
-		public void Dispose()															{ ResourceManager_Release(m_ResourceManagerPtr);											}
+		public ResourceManager(string archiveDirectory)
+		{
+			if (Directory.Exists(archiveDirectory))
+				m_ResourceManagerPtr = ResourceManager_Create(archiveDirectory);
+		}
+
+		public void Dispose()
+		{
+			if (m_ResourceManagerPtr != null)
+				ResourceManager_Release(m_ResourceManagerPtr);
+		}
 
 		public string[] GetAllFilenames(string filenameRegexStr, bool accessArchives)
 		{
+			if (m_ResourceManagerPtr == null)
+				return new string[0];
+
 			return Marshalling.GetString(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
 		public string[] GetAllFilenamesOfType(string filenameRegexStr, bool accessArchives)
 		{
+			if (m_ResourceManagerPtr == null)
+				return new string[0];
+
 			return Marshalling.GetString(ResourceManager_GetAllFilenames(m_ResourceManagerPtr, filenameRegexStr, accessArchives)).Split('|');
 		}
 
@@ -25,6 +41,9 @@ namespace OP2UtilityDotNet
 		/// </summary>
 		public string FindContainingArchivePath(string filename)
 		{
+			if (m_ResourceManagerPtr == null)
+				return null;
+
 			return Marshalling.GetString(ResourceManager_FindContainingArchivePath(m_ResourceManagerPtr, filename));
 		}
 
@@ -33,13 +52,25 @@ namespace OP2UtilityDotNet
 		/// </summary>
 		public string[] GetArchiveFilenames()
 		{
+			if (m_ResourceManagerPtr == null)
+				return new string[0];
+
 			return Marshalling.GetString(ResourceManager_GetArchiveFilenames(m_ResourceManagerPtr)).Split('|');
 		}
 
-		public ulong GetResourceSize(string filename, bool accessArchives)				{ return ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);	}
+		public ulong GetResourceSize(string filename, bool accessArchives)
+			{
+			if (m_ResourceManagerPtr == null)
+				return 0;
+
+			return ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);
+			}
 
 		public byte[] GetResource(string filename, bool accessArchives)
 		{
+			if (m_ResourceManagerPtr == null)
+				return null;
+
 			int size = (int)ResourceManager_GetResourceSize(m_ResourceManagerPtr, filename, accessArchives);
 			if (size == 0) return null;
 
