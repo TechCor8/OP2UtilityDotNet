@@ -26,11 +26,11 @@ namespace OP2UtilityDotNet
 			Archive_WriteVolFile(volumeFilename, files);
 		}
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Archive_CreateVolFile(string filename);
-		[DllImport(Platform.DLLPath)] private static extern void Archive_ReleaseVolFile(IntPtr volFile);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Archive_CreateVolFile(string filename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Archive_ReleaseVolFile(IntPtr volFile);
 
-		[DllImport(Platform.DLLPath)] private static extern int Archive_GetCompressionCode(IntPtr archive, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Archive_GetCompressionCode(IntPtr archive, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern void Archive_WriteVolFile(string volumeFilename, string filesToPack);	// Pipe delimited
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Archive_WriteVolFile(string volumeFilename, string filesToPack);	// Pipe delimited
 	}
 }

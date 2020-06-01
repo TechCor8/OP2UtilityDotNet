@@ -45,20 +45,20 @@ namespace OP2UtilityDotNet
 		public byte[] ReadFileByName(string name)								{ return ReadFileByIndex(GetIndex(name));									}
 
 
-		[DllImport(Platform.DLLPath)] private static extern string Archive_GetArchiveFilename(IntPtr archive);
-		[DllImport(Platform.DLLPath)] private static extern ulong Archive_GetArchiveFileSize(IntPtr archive);
-		[DllImport(Platform.DLLPath)] private static extern ulong Archive_GetCount(IntPtr archive);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern string Archive_GetArchiveFilename(IntPtr archive);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Archive_GetArchiveFileSize(IntPtr archive);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Archive_GetCount(IntPtr archive);
 
-		[DllImport(Platform.DLLPath)] private static extern  bool Archive_Contains(IntPtr archive, string name);
-		[DllImport(Platform.DLLPath)] private static extern void Archive_ExtractFileByName(IntPtr archive, string name, string pathOut);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern  bool Archive_Contains(IntPtr archive, string name);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Archive_ExtractFileByName(IntPtr archive, string name, string pathOut);
 
-		[DllImport(Platform.DLLPath)] private static extern ulong Archive_GetIndex(IntPtr archive, string name);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Archive_GetName(IntPtr archive, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Archive_GetIndex(IntPtr archive, string name);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Archive_GetName(IntPtr archive, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern uint Archive_GetSize(IntPtr archive, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern void Archive_ExtractFileByIndex(IntPtr archive, ulong index, string pathOut);
-		[DllImport(Platform.DLLPath)] private static extern void Archive_ExtractAllFiles(IntPtr archive, string destDirectory);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Archive_GetSize(IntPtr archive, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Archive_ExtractFileByIndex(IntPtr archive, ulong index, string pathOut);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Archive_ExtractAllFiles(IntPtr archive, string destDirectory);
 
-		[DllImport(Platform.DLLPath)] private static extern bool Archive_ReadFileByIndex(IntPtr archive, ulong index, IntPtr buffer);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern bool Archive_ReadFileByIndex(IntPtr archive, ulong index, IntPtr buffer);
 	}
 }

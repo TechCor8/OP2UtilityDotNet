@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="OP2UtilityForC">
+      <UniqueIdentifier>{efcd77f0-1b57-493c-9a7a-1c5aa11f3507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility">
+      <UniqueIdentifier>{dc66b4b9-7c41-4145-b44b-81dee89f85f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\Archive">
+      <UniqueIdentifier>{bb6ab377-00c3-4fcb-81ca-8d88a3ad7cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\Bitmap">
+      <UniqueIdentifier>{da4d56de-1566-47e2-8ec2-26cb286ecfe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\Map">
+      <UniqueIdentifier>{bebda6f5-e6be-4842-bae7-1a7108252a82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\Sprite">
+      <UniqueIdentifier>{f00913b4-6a70-477a-93b2-8b885c6cda59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\src">
+      <UniqueIdentifier>{c8170c21-6d1c-4bd0-94dd-a61a8a58a481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OP2Utility\Stream">
+      <UniqueIdentifier>{f1bd27ef-6ec9-4418-92fa-245a350a4206}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\OP2UtilityForC\Marshalling.cpp">
+      <Filter>OP2UtilityForC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2UtilityForC\Wrapper\Archive_C.cpp">
+      <Filter>OP2UtilityForC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2UtilityForC\Wrapper\Map_C.cpp">
+      <Filter>OP2UtilityForC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2UtilityForC\Wrapper\OP2BmpLoader_C.cpp">
+      <Filter>OP2UtilityForC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2UtilityForC\Wrapper\ResourceManager_C.cpp">
+      <Filter>OP2UtilityForC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\AdaptiveHuffmanTree.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\ArchiveFile.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\BitStreamReader.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\ClmFile.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\HuffLZ.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\VolFile.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Archive\WaveFile.cpp">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\BitmapFile.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\BmpHeader.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\Color.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\ImageHeader.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\IndexedBmpReader.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Bitmap\IndexedBmpWriter.cpp">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Map\Map.cpp">
+      <Filter>OP2Utility\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Map\MapHeader.cpp">
+      <Filter>OP2Utility\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Map\MapReader.cpp">
+      <Filter>OP2Utility\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Map\MapWriter.cpp">
+      <Filter>OP2Utility\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Map\SavedGameUnits.cpp">
+      <Filter>OP2Utility\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Stream\DynamicMemoryWriter.cpp">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Stream\FileReader.cpp">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Stream\FileWriter.cpp">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Stream\MemoryReader.cpp">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Stream\MemoryWriter.cpp">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\BitTwiddle.cpp">
+      <Filter>OP2Utility\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\ResourceManager.cpp">
+      <Filter>OP2Utility\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\StringHelper.cpp">
+      <Filter>OP2Utility\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\XFile.cpp">
+      <Filter>OP2Utility\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\ArtFile.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\ArtReader.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\ArtWriter.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\OP2BmpLoader.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\PaletteHeader.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OP2Utility\src\Sprite\SectionHeader.cpp">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\OP2UtilityForC\Marshalling.h">
+      <Filter>OP2UtilityForC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\AdaptiveHuffmanTree.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\ArchiveFile.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\BitStreamReader.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\ClmFile.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\CompressionType.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\HuffLZ.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\VolFile.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Archive\WaveFile.h">
+      <Filter>OP2Utility\Archive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Bitmap\BitmapFile.h">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Bitmap\BmpCompression.h">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Bitmap\BmpHeader.h">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Bitmap\Color.h">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Bitmap\ImageHeader.h">
+      <Filter>OP2Utility\Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\CellType.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\Map.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\MapHeader.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\SavedGameUnits.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\TerrainType.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\Tile.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\TileGroup.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\TileMapping.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Map\TilesetSource.h">
+      <Filter>OP2Utility\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\BidirectionalReader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\BidirectionalWriter.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\DynamicMemoryWriter.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\FileReader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\FileWriter.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\ForwardReader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\ForwardWriter.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\MemoryReader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\MemoryWriter.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\Reader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\SliceReader.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Stream\Writer.h">
+      <Filter>OP2Utility\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\Animation.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\ArtFile.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\ImageMeta.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\OP2BmpLoader.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\PaletteHeader.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Sprite\SectionHeader.h">
+      <Filter>OP2Utility\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\BitTwiddle.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Point.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Rect.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\ResourceManager.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\StringHelper.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\Tag.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\src\XFile.h">
+      <Filter>OP2Utility\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OP2Utility\include\OP2Utility.h">
+      <Filter>OP2Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

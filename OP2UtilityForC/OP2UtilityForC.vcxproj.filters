@@ -6,19 +6,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Wrapper\Archive.cpp">
-      <Filter>Wrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="Wrapper\ResourceManager.cpp">
-      <Filter>Wrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="Wrapper\Map.cpp">
-      <Filter>Wrapper</Filter>
-    </ClCompile>
-    <ClCompile Include="Wrapper\OP2BmpLoader.cpp">
-      <Filter>Wrapper</Filter>
-    </ClCompile>
     <ClCompile Include="Marshalling.cpp" />
+    <ClCompile Include="Wrapper\Archive_C.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\Map_C.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\OP2BmpLoader_C.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\ResourceManager_C.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Marshalling.h" />

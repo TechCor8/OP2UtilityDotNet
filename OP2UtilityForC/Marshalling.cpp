@@ -1,7 +1,15 @@
 #include "Marshalling.h"
 
+using namespace std;
+
+#if defined(_MSC_VER)
+// Windows
 #ifndef EXPORT
 #define EXPORT __declspec(dllexport)
+#endif
+#elif defined(__GNUC__)
+//  GCC
+#define EXPORT __attribute__((visibility("default")))
 #endif
 
 const char* GetCStrFromString(std::string s)
@@ -10,7 +18,7 @@ const char* GetCStrFromString(std::string s)
 	size_t length = strlen(_str);
 	
 	char* buffer = new char[length*2+1];
-	strcpy_s(buffer, length*2+1, _str);
+	strcpy(buffer/*, length*2+1*/, _str);
 
 	return buffer;
 }
@@ -44,7 +52,7 @@ std::vector<std::string> SplitString(std::string s, char delimiter)
 
 extern "C"
 {
-	extern EXPORT void __stdcall FreeString(char* str)
+	extern EXPORT void FreeString(char* str)
 	{
 		delete [] str;
 	}

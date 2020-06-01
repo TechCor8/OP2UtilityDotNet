@@ -192,93 +192,93 @@ namespace OP2UtilityDotNet
 
 
 		
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_Create();
-		[DllImport(Platform.DLLPath)] private static extern void Map_Release(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_Create();
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_Release(IntPtr map);
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_ReadMap(string filename);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_ReadMapStream(IntPtr buffer, ulong size);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_ReadMap(string filename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_ReadMapStream(IntPtr buffer, ulong size);
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_ReadSavedGame(string filename);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_ReadSavedGameStream(IntPtr buffer, ulong size);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_ReadSavedGame(string filename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_ReadSavedGameStream(IntPtr buffer, ulong size);
 
 		// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetTile(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTile(IntPtr map, ulong index, int tile);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTile(IntPtr map, int tile);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTile(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileCount(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetTile(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTile(IntPtr map, ulong index, int tile);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_AddTile(IntPtr map, int tile);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTile(IntPtr map, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectX1(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectX2(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectY1(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetClipRectY2(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetClipRectX1(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetClipRectX2(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetClipRectY1(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetClipRectY2(IntPtr map);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetClipRectX1(IntPtr map, int value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetClipRectX2(IntPtr map, int value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetClipRectY1(IntPtr map, int value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetClipRectY2(IntPtr map, int value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetClipRectX1(IntPtr map, int value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetClipRectX2(IntPtr map, int value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetClipRectY1(IntPtr map, int value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetClipRectY2(IntPtr map, int value);
 
 		// Listing of all tile set sources associated with the map.
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTilesetSourceCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTilesetSourceFilename(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTilesetSourceNumTiles(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceFilename(IntPtr map, ulong index, string tilesetFilename);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTilesetSourceNumTiles(IntPtr map, ulong index, int numTiles);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTilesetSource(IntPtr map, string tilesetFilename, int numTiles);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTilesetSource(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTilesetSourceCount(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_GetTilesetSourceFilename(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetTilesetSourceNumTiles(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTilesetSourceFilename(IntPtr map, ulong index, string tilesetFilename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTilesetSourceNumTiles(IntPtr map, ulong index, int numTiles);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_AddTilesetSource(IntPtr map, string tilesetFilename, int numTiles);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTilesetSource(IntPtr map, ulong index);
 
 		// Metadata about each available tile from the tile set sources.
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMappingCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMapping(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileMapping(IntPtr map, ulong index, ulong tileMapping);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTileMapping(IntPtr map, ulong tileMapping);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileMapping(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileMappingCount(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileMapping(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileMapping(IntPtr map, ulong index, ulong tileMapping);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_AddTileMapping(IntPtr map, ulong tileMapping);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTileMapping(IntPtr map, ulong index);
 
 		// Listing of properties grouped by terrain type. Properties apply to a given range of tiles.
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTerrainTypeCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTerrainType(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTerrainType(IntPtr map, ulong index, IntPtr terrainType);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTerrainType(IntPtr map, IntPtr terrainType);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTerrainType(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTerrainTypeCount(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_GetTerrainType(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTerrainType(IntPtr map, ulong index, IntPtr terrainType);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_AddTerrainType(IntPtr map, IntPtr terrainType);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTerrainType(IntPtr map, ulong index);
 
 		//std::vector<TileGroup> tileGroups;
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileGroupCount(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr Map_GetTileGroupName(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileWidth(IntPtr map, ulong index);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupTileHeight(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileGroupCount(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr Map_GetTileGroupName(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetTileGroupTileWidth(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetTileGroupTileHeight(IntPtr map, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileGroupMappingIndexCount(IntPtr map, ulong tileGroupIndex);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex, uint value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_AddTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, uint value);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileGroupMappingIndexCount(IntPtr map, ulong tileGroupIndex);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex, uint value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_AddTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, uint value);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTileGroupMappingIndex(IntPtr map, ulong tileGroupIndex, ulong mappingIndex);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupName(IntPtr map, ulong index, string groupName);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileWidth(IntPtr map, ulong index, uint tileWidth);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileGroupTileHeight(IntPtr map, ulong index, uint tileHeight);
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_AddTileGroup(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern void Map_RemoveTileGroup(IntPtr map, ulong index);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileGroupName(IntPtr map, ulong index, string groupName);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileGroupTileWidth(IntPtr map, ulong index, uint tileWidth);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileGroupTileHeight(IntPtr map, ulong index, uint tileHeight);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_AddTileGroup(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_RemoveTileGroup(IntPtr map, ulong index);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_Write(IntPtr map, string filename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_Write(IntPtr map, string filename);
 		
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetVersionTag(IntPtr map, uint versionTag);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetVersionTag(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern bool Map_IsSavedGame(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetWidthInTiles(IntPtr map);
-		[DllImport(Platform.DLLPath)] private static extern uint Map_GetHeightInTiles(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetVersionTag(IntPtr map, uint versionTag);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetVersionTag(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern bool Map_IsSavedGame(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetWidthInTiles(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern uint Map_GetHeightInTiles(IntPtr map);
 
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTileMappingIndex(IntPtr map, ulong x, ulong y);
-		[DllImport(Platform.DLLPath)] private static extern int Map_GetCellType(IntPtr map, ulong x, ulong y);
-		[DllImport(Platform.DLLPath)] private static extern bool Map_GetLavaPossible(IntPtr map, ulong x, ulong y);
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetTilesetIndex(IntPtr map, ulong x, ulong y);
-		[DllImport(Platform.DLLPath)] private static extern ulong Map_GetImageIndex(IntPtr map, ulong x, ulong y);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTileMappingIndex(IntPtr map, ulong x, ulong y);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern int Map_GetCellType(IntPtr map, ulong x, ulong y);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern bool Map_GetLavaPossible(IntPtr map, ulong x, ulong y);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetTilesetIndex(IntPtr map, ulong x, ulong y);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong Map_GetImageIndex(IntPtr map, ulong x, ulong y);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetTileMappingIndex(IntPtr map, ulong x, ulong y, ulong mappingIndex);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetCellType(IntPtr map, ulong x, ulong y, int cellType);
-		[DllImport(Platform.DLLPath)] private static extern void Map_SetLavaPossible(IntPtr map, ulong x, ulong y, bool lavaPossible);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetTileMappingIndex(IntPtr map, ulong x, ulong y, ulong mappingIndex);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetCellType(IntPtr map, ulong x, ulong y, int cellType);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_SetLavaPossible(IntPtr map, ulong x, ulong y, bool lavaPossible);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_CheckMinVersionTag(IntPtr map, uint versionTag);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_CheckMinVersionTag(IntPtr map, uint versionTag);
 
-		[DllImport(Platform.DLLPath)] private static extern void Map_TrimTilesetSources(IntPtr map);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void Map_TrimTilesetSources(IntPtr map);
 	}
 }

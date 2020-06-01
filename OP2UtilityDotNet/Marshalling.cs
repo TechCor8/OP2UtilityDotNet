@@ -14,6 +14,6 @@ namespace OP2UtilityDotNet
 		}
 
 
-		[DllImport(Platform.DLLPath)] private static extern void FreeString(IntPtr str);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void FreeString(IntPtr str);
 	}
 }

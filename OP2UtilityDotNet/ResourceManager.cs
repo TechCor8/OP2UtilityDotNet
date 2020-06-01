@@ -91,16 +91,16 @@ namespace OP2UtilityDotNet
 		}
 
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_Create(string archiveDirectory);
-		[DllImport(Platform.DLLPath)] private static extern void ResourceManager_Release(IntPtr resourceManager);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr ResourceManager_Create(string archiveDirectory);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern void ResourceManager_Release(IntPtr resourceManager);
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetAllFilenames(IntPtr resourceManager, string filenameRegexStr, bool accessArchives);
-		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetAllFilenamesOfType(IntPtr resourceManager, string extension, bool accessArchives);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr ResourceManager_GetAllFilenames(IntPtr resourceManager, string filenameRegexStr, bool accessArchives);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr ResourceManager_GetAllFilenamesOfType(IntPtr resourceManager, string extension, bool accessArchives);
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_FindContainingArchivePath(IntPtr resourceManager, string filename);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr ResourceManager_FindContainingArchivePath(IntPtr resourceManager, string filename);
 
-		[DllImport(Platform.DLLPath)] private static extern IntPtr ResourceManager_GetArchiveFilenames(IntPtr resourceManager);
-		[DllImport(Platform.DLLPath)] private static extern ulong ResourceManager_GetResourceSize(IntPtr resourceManager, string filename, bool accessArchives);
-		[DllImport(Platform.DLLPath)] private static extern bool ResourceManager_GetResource(IntPtr resourceManager, string filename, bool accessArchives, IntPtr buffer);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern IntPtr ResourceManager_GetArchiveFilenames(IntPtr resourceManager);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern ulong ResourceManager_GetResourceSize(IntPtr resourceManager, string filename, bool accessArchives);
+		[DllImport(Platform.DLLPath, CallingConvention=CallingConvention.Cdecl)] private static extern bool ResourceManager_GetResource(IntPtr resourceManager, string filename, bool accessArchives, IntPtr buffer);
 	}
 }
