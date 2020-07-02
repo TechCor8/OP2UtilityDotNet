@@ -10,8 +10,19 @@ namespace OP2UtilityDotNet.Streams
 		private long _Position;
 
 
+		public SliceStream(Stream baseStream, long dataLength) : this(baseStream, baseStream.Position, dataLength)
+		{
+		}
+
 		public SliceStream(Stream baseStream, long dataOffset, long dataLength)
 		{
+			if (dataOffset < 0 || dataOffset >= baseStream.Length)
+				throw new System.ArgumentOutOfRangeException(nameof(dataOffset));
+			if (dataLength < 0 || dataLength > baseStream.Length)
+				throw new System.ArgumentOutOfRangeException(nameof(dataLength));
+			if (dataOffset + dataLength > baseStream.Length)
+				throw new System.ArgumentOutOfRangeException(nameof(dataOffset) + " + " + nameof(dataLength), "Slice extends past end of stream.");
+
 			_BaseStream = baseStream;
 			_DataOffset = dataOffset;
 			_DataLength = dataLength;

@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace OP2UtilityDotNet.Bitmap
@@ -49,7 +50,7 @@ namespace OP2UtilityDotNet.Bitmap
 		public const uint DefaultImportantColorCount = 0;
 
 		// BitCount verification
-		public static readonly ushort[] ValidBitCounts = new ushort[6] { 01, 4, 8, 16, 24, 32 };
+		public static readonly ReadOnlyCollection<ushort> ValidBitCounts = new ReadOnlyCollection<ushort>(new ushort[6] { 01, 4, 8, 16, 24, 32 });
 
 		public void Serialize(BinaryWriter writer)
 		{
@@ -89,7 +90,7 @@ namespace OP2UtilityDotNet.Bitmap
 		}
 		public static bool IsValidBitCount(ushort bitCount)
 		{
-			for (int i=0; i < ValidBitCounts.Length; ++i)
+			for (int i=0; i < ValidBitCounts.Count; ++i)
 			{
 				if (ValidBitCounts[i] == bitCount)
 					return true;
@@ -179,10 +180,7 @@ namespace OP2UtilityDotNet.Bitmap
 		{
 			ImageHeader header = obj as ImageHeader;
 
-			if (header == null)
-				return false;
-
-			return header == this;
+			return this == header;
 		}
 
 		public override int GetHashCode()
@@ -194,9 +192,15 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public static bool operator ==(ImageHeader lhs, ImageHeader rhs)
 		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+
 			return lhs.headerSize == rhs.headerSize
 				&& lhs.width == rhs.width
-				&& lhs.height == rhs.headerSize
+				&& lhs.height == rhs.height
 				&& lhs.planes == rhs.planes
 				&& lhs.bitCount == rhs.bitCount
 				&& lhs.compression == rhs.compression

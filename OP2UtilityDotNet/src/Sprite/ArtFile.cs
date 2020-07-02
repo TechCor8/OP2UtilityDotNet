@@ -4,7 +4,7 @@ using System.IO;
 
 namespace OP2UtilityDotNet.Sprite
 {
-	class ArtFile
+	public class ArtFile
 	{
 		public List<Palette> palettes = new List<Palette>();
 		public List<ImageMeta> imageMetas = new List<ImageMeta>();
@@ -14,9 +14,17 @@ namespace OP2UtilityDotNet.Sprite
 		public static ArtFile Read(string filename)
 		{
 			using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-			using (BinaryReader mapReader = new BinaryReader(fs))
+			using (BinaryReader artReader = new BinaryReader(fs))
 			{
-				return Read(mapReader);
+				return Read(artReader);
+			}
+		}
+
+		public static ArtFile Read(Stream stream)
+		{
+			using (BinaryReader artReader = new BinaryReader(stream, System.Text.Encoding.ASCII, true))
+			{
+				return Read(artReader);
 			}
 		}
 
@@ -37,6 +45,14 @@ namespace OP2UtilityDotNet.Sprite
 			using (BinaryWriter artWriter = new BinaryWriter(fs))
 			{
 				Write(artWriter);
+			}
+		}
+
+		public void Write(Stream stream)
+		{
+			using (BinaryWriter writer = new BinaryWriter(stream, System.Text.Encoding.ASCII, true))
+			{
+				Write(writer);
 			}
 		}
 
@@ -73,15 +89,17 @@ namespace OP2UtilityDotNet.Sprite
 
 				paletteHeader.Validate();
 
-				artFile.palettes[i] = new Palette(reader);
+				Palette palette = new Palette(reader);
 
 				// Rearrange color into standard format. Outpost 2 uses custom color order.
-				for (int j=0; j < artFile.palettes[i].colors.Length; ++j)
+				for (int j=0; j < palette.colors.Length; ++j)
 				{
-					byte temp = artFile.palettes[i].colors[j].red;
-					artFile.palettes[i].colors[j].red = artFile.palettes[i].colors[j].blue;
-					artFile.palettes[i].colors[j].blue = temp;
+					byte temp = palette.colors[j].red;
+					palette.colors[j].red = palette.colors[j].blue;
+					palette.colors[j].blue = temp;
 				}
+
+				artFile.palettes.Add(palette);
 			}
 		}
 
@@ -200,13 +218,15 @@ namespace OP2UtilityDotNet.Sprite
 			foreach (Palette palette in palettes) {
 				PaletteHeader.CreatePaletteHeader().Serialize(writer);
 
-				for (int i=0; i < palette.colors.Length; ++i) {
-					byte swap = palette.colors[i].red;
-					palette.colors[i].red = palette.colors[i].blue;
-					palette.colors[i].blue = swap;
+				Palette clonedPalette = new Palette(palette);
+
+				for (int i=0; i < clonedPalette.colors.Length; ++i) {
+					byte swap = clonedPalette.colors[i].red;
+					clonedPalette.colors[i].red = clonedPalette.colors[i].blue;
+					clonedPalette.colors[i].blue = swap;
 				}
 
-				palette.Serialize(writer);
+				clonedPalette.Serialize(writer);
 			}
 		}
 

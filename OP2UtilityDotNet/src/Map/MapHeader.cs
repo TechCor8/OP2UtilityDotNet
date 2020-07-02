@@ -1,7 +1,7 @@
 ﻿
 using System.IO;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// Outpost 2 map and save file header
 	public class MapHeader
@@ -17,7 +17,7 @@ namespace OP2UtilityDotNet.Map
 		public const uint CurrentMapVersion = 0x1011;
 
 		// The map's version tag must be >= MinMapVersion or Outpost 2 will abort loading the map.
-		public uint versionTag;
+		public uint versionTag = CurrentMapVersion;
 
 		// True if file represents a saved game instead of a map file.
 		public int bSavedGame;

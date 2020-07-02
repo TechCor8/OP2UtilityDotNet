@@ -1,5 +1,5 @@
 ﻿
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// Facilitates finding the source BMP file (well00XX.bmp) for a tile set.
 	// Tile set names must be exactly 8 chars long not including file extension.
@@ -13,14 +13,19 @@ namespace OP2UtilityDotNet.Map
 		public uint numTiles;
 
 
+		public TilesetSource() { }
+
+		public TilesetSource(string tilesetFilename, uint numTiles)
+		{
+			this.tilesetFilename = tilesetFilename;
+			this.numTiles = numTiles;
+		}
+
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
+			TilesetSource rhs = obj as TilesetSource;
 
-			TilesetSource c = (TilesetSource)obj;
-
-			return c == this;
+			return this == rhs;
 		}
 
 		public override int GetHashCode()
@@ -30,6 +35,12 @@ namespace OP2UtilityDotNet.Map
 
 		public static bool operator ==(TilesetSource lhs, TilesetSource rhs)
 		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+
 			return (lhs.numTiles == rhs.numTiles) && (lhs.tilesetFilename == rhs.tilesetFilename);
 		}
 		public static bool operator !=(TilesetSource lhs, TilesetSource rhs)

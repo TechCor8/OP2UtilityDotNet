@@ -21,9 +21,20 @@
 
 			// Allocate space for tree
 			linkOrData = new List<NodeType>(nodeCount);
-			subtreeCount =  new List<NodeType>(nodeCount);
+			subtreeCount = new List<NodeType>(nodeCount);
 			parentIndex = new List<NodeType>(nodeCount + terminalNodeCount);
-		
+
+			for (NodeIndex i = 0; i < nodeCount; ++i)
+			{
+				linkOrData.Add(new NodeType());
+				subtreeCount.Add(new NodeType());
+			}
+
+			for (NodeIndex i = 0; i < nodeCount + terminalNodeCount; ++i)
+			{
+				parentIndex.Add(new NodeType());
+			}
+
 			// Initialize the tree
 			// Initialize terminal nodes
 			for (NodeIndex i = 0; i < terminalNodeCount; ++i)

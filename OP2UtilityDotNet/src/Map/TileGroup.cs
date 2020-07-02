@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// A set of tiles that group together to form a feature in Outpost 2, such as a large rock or cliff.
 	public class TileGroup

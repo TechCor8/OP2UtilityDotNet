@@ -1,7 +1,7 @@
 ﻿
 using System.IO;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	public struct Range16
 	{

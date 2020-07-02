@@ -50,7 +50,7 @@ namespace OP2UtilityDotNet
 
 			Rect r = (Rect)obj;
 
-			return r == this;
+			return this == r;
 		}
 
 		public override int GetHashCode()

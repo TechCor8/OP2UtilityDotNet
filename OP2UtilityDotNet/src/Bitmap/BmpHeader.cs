@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace OP2UtilityDotNet.Bitmap
@@ -12,8 +13,9 @@ namespace OP2UtilityDotNet.Bitmap
 		{
 			BmpHeader header = new BmpHeader();
 
-			header.fileSignature = new byte[FileSignature.Length];
-			System.Array.Copy(FileSignature, header.fileSignature, FileSignature.Length);
+			header.fileSignature = new byte[FileSignature.Count];
+			FileSignature.CopyTo(header.fileSignature, 0);
+			//System.Array.Copy(FileSignature, header.fileSignature, FileSignature.Count);
 
 			header.size = fileSize;
 			header.reserved1 = DefaultReserved1;
@@ -29,7 +31,7 @@ namespace OP2UtilityDotNet.Bitmap
 		public ushort reserved2;
 		public uint pixelOffset;
 
-		public static readonly byte[] FileSignature = new byte[2] { (byte)'B', (byte)'M' };
+		public static readonly ReadOnlyCollection<byte> FileSignature = new ReadOnlyCollection<byte>(new byte[2] { (byte)'B', (byte)'M' });
 		public const ushort DefaultReserved1 = 0;
 		public const ushort DefaultReserved2 = 0;
 
@@ -55,7 +57,7 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public bool IsValidFileSignature()
 		{
-			if (fileSignature.Length != FileSignature.Length)
+			if (fileSignature.Length != FileSignature.Count)
 				return false;
 
 			for (int i = 0; i < fileSignature.Length; ++i)
@@ -77,10 +79,7 @@ namespace OP2UtilityDotNet.Bitmap
 		{
 			BmpHeader header = obj as BmpHeader;
 
-			if (header == null)
-				return false;
-
-			return header == this;
+			return this == header;
 		}
 
 		public override int GetHashCode()
@@ -90,6 +89,12 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public static bool operator ==(BmpHeader lhs, BmpHeader rhs)
 		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+
 			if (lhs.fileSignature.Length != rhs.fileSignature.Length)
 				return false;
 

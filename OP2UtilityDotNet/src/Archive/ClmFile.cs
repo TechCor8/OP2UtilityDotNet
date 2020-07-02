@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace OP2UtilityDotNet.Archive
 {
@@ -121,8 +123,8 @@ namespace OP2UtilityDotNet.Archive
 		}
 
 		// A null terminator (\0) is automatically assigned to the end of the string when placing it within the std::array
-		private static readonly byte[] standardFileVersion = System.Text.Encoding.ASCII.GetBytes("OP2 Clump File Version 1.0\x01A\0\0\0\0\0");
-		private static readonly byte[] standardUnknown = new byte[6] { 0, 0, 0, 0, 1, 0 };
+		private static readonly ReadOnlyCollection<byte> standardFileVersion = new ReadOnlyCollection<byte>(System.Text.Encoding.ASCII.GetBytes("OP2 Clump File Version 1.0\x01A\0\0\0\0\0"));
+		private static readonly ReadOnlyCollection<byte> standardUnknown = new ReadOnlyCollection<byte>(new byte[6] { 0, 0, 0, 0, 1, 0 });
 	
 		private class ClmHeader
 		{
@@ -144,7 +146,7 @@ namespace OP2UtilityDotNet.Archive
 
 			public bool CheckFileVersion()
 			{
-				if (fileVersion.Length != standardFileVersion.Length)
+				if (fileVersion.Length != standardFileVersion.Count)
 					return false;
 
 				for (int i=0; i < fileVersion.Length; ++i)
@@ -158,7 +160,7 @@ namespace OP2UtilityDotNet.Archive
 
 			public bool CheckUnknown()
 			{
-				if (unknown.Length != standardUnknown.Length)
+				if (unknown.Length != standardUnknown.Count)
 					return false;
 
 				for (int i=0; i < unknown.Length; ++i)
@@ -204,7 +206,7 @@ namespace OP2UtilityDotNet.Archive
 
 			public static ClmHeader MakeHeader(WaveFormatEx waveFormat, uint packedFilesCount)
 			{
-				return new ClmHeader(standardFileVersion,  waveFormat, standardUnknown, packedFilesCount);
+				return new ClmHeader(standardFileVersion.ToArray(),  waveFormat, standardUnknown.ToArray(), packedFilesCount);
 			}
 		};
 

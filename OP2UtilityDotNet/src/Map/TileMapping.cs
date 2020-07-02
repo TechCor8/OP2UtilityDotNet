@@ -1,7 +1,7 @@
 ﻿
 using System.IO;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// Metadata that applies to all tiles on a map with the same Tileset and TileIndex.
 	public struct TileMapping

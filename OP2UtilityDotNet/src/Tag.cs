@@ -12,7 +12,9 @@ namespace OP2UtilityDotNet
 
 		public byte[] GetBytes()
 		{
-			return text;
+			byte[] result = new byte[4];
+			Array.Copy(text, result, result.Length);
+			return result;
 		}
 
 		// Allow default construction
@@ -46,12 +48,9 @@ namespace OP2UtilityDotNet
 		// Equality and inequality comparable
 		public override bool Equals(object obj)
 		{
-			Tag t = obj as Tag;
+			Tag rhs = obj as Tag;
 
-			if (t == null)
-				return false;
-
-			return this == t;
+			return this == rhs;
 		}
 
 		public override int GetHashCode()
@@ -59,23 +58,29 @@ namespace OP2UtilityDotNet
 			return text.GetHashCode();
 		}
 
-		public static bool operator ==(Tag tag1, Tag tag2)
+		public static bool operator ==(Tag lhs, Tag rhs)
 		{
-			if (tag1.text.Length != tag2.text.Length)
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
 				return false;
 
-			for (int i=0; i < tag1.text.Length; ++i)
+			if (lhs.text.Length != rhs.text.Length)
+				return false;
+
+			for (int i=0; i < lhs.text.Length; ++i)
 			{
-				if (tag1.text[i] != tag2.text[i])
+				if (lhs.text[i] != rhs.text[i])
 					return false;
 			}
 
 			return true;
 		}
 
-		public static bool operator !=(Tag tag1, Tag tag2)
+		public static bool operator !=(Tag lhs, Tag rhs)
 		{
-			return !(tag1 == tag2);
+			return !(lhs == rhs);
 		}
 
 		public override string ToString()

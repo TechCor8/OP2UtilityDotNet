@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// Placeholder for unknown object
 	public class ObjectType1
@@ -24,7 +24,7 @@ namespace OP2UtilityDotNet.Map
 	// Placeholder struct for unit data
 	public class UnitRecord
 	{
-		private const int DefaultSizeOfUnit = 120;
+		public const int DefaultSizeOfUnit = 120;
 
 		public byte[] data = new byte[DefaultSizeOfUnit];
 

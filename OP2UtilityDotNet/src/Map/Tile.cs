@@ -1,5 +1,5 @@
 ﻿
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// Outpost 2 Tile metadata. Implemented as a Bitfield structure (32 bits total)
 	public class Tile

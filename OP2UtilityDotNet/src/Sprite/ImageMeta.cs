@@ -100,6 +100,9 @@ namespace OP2UtilityDotNet.Sprite
 		public ImageType type = new ImageType();
 		public ushort paletteIndex;
 
+
+		public ImageMeta() { }
+
 		public void Serialize(BinaryWriter writer)
 		{
 			writer.Write(scanLineByteWidth);

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// FILE FORMAT DOCUMENTATION:
 	//     Outpost2SVN\OllyDbg\InternalData\FileFormat SavedGame and Map.txt.
@@ -13,7 +15,7 @@ namespace OP2UtilityDotNet.Map
 	//An Outpost 2 map file.
 	public class Map
 	{
-		private static readonly byte[] tilesetHeader = new byte[10] { (byte)'T', (byte)'I', (byte)'L', (byte)'E', (byte)' ', (byte)'S', (byte)'E', (byte)'T', (byte)'\x1a', (byte)'\0' };
+		private static ReadOnlyCollection<byte> tilesetHeader = new ReadOnlyCollection<byte>(System.Text.Encoding.ASCII.GetBytes("TILE SET\x1a\0"));
 
 		// 1D listing of all tiles on the associated map. See MapHeader data for height and width of map.
 		public List<Tile> tiles = new List<Tile>();
@@ -88,6 +90,14 @@ namespace OP2UtilityDotNet.Map
 			}
 		}
 
+		public static Map ReadSavedGame(Stream savedGameStream)
+		{
+			using (BinaryReader reader = new BinaryReader(savedGameStream, System.Text.Encoding.ASCII, true))
+			{
+				return ReadSavedGame(reader);
+			}
+		}
+
 		public static Map ReadSavedGame(BinaryReader savedGameStream)
 		{
 			SkipSaveGameHeader(savedGameStream);
@@ -114,6 +124,14 @@ namespace OP2UtilityDotNet.Map
 			}
 		}
 
+		public void Write(Stream mapStream)
+		{
+			using (BinaryWriter writer = new BinaryWriter(mapStream, System.Text.Encoding.ASCII, true))
+			{
+				Write(writer);
+			}
+		}
+
 		public void Write(BinaryWriter mapStream)
 		{
 			Map map = this;
@@ -124,7 +142,7 @@ namespace OP2UtilityDotNet.Map
 				mapStream.Write(map.tiles[i].backingField);
 			map.clipRect.Serialize(mapStream);
 			WriteTilesetSources(mapStream, map.tilesetSources);
-			mapStream.Write(tilesetHeader);
+			mapStream.Write(tilesetHeader.ToArray());
 			mapStream.Write((uint)map.tileMappings.Count);
 			for (int i=0; i < map.tileMappings.Count; ++i)
 				map.tileMappings[i].Serialize(mapStream);
@@ -365,7 +383,7 @@ namespace OP2UtilityDotNet.Map
 		{
 			byte[] buffer = stream.ReadBytes(10);
 
-			if (buffer.Length != tilesetHeader.Length)
+			if (buffer.Length != tilesetHeader.Count)
 			{
 				throw new System.Exception("'TILE SET' string not found.");
 			}

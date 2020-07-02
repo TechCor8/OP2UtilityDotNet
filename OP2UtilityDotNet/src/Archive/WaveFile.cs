@@ -64,17 +64,9 @@ namespace OP2UtilityDotNet.Archive
 
 		public override bool Equals(object obj)
 		{
-			WaveFormatEx b = obj as WaveFormatEx;
-			if (obj == null)
-				return false;
-
-			return wFormatTag == b.wFormatTag
-				&& nChannels == b.nChannels
-				&& nSamplesPerSec == b.nSamplesPerSec
-				&& nAvgBytesPerSec == b.nAvgBytesPerSec
-				&& nBlockAlign == b.nBlockAlign
-				&& wBitsPerSample == b.wBitsPerSample
-				&& cbSize == b.cbSize;
+			WaveFormatEx rhs = obj as WaveFormatEx;
+			
+			return this == rhs;
 		}
 
 		public override int GetHashCode()
@@ -82,14 +74,26 @@ namespace OP2UtilityDotNet.Archive
 			return base.GetHashCode();
 		}
 
-		public static bool operator ==(WaveFormatEx a, WaveFormatEx b)
+		public static bool operator ==(WaveFormatEx lhs, WaveFormatEx rhs)
 		{
-			return a.Equals(b);
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+
+			return lhs.wFormatTag == rhs.wFormatTag
+				&& lhs.nChannels == rhs.nChannels
+				&& lhs.nSamplesPerSec == rhs.nSamplesPerSec
+				&& lhs.nAvgBytesPerSec == rhs.nAvgBytesPerSec
+				&& lhs.nBlockAlign == rhs.nBlockAlign
+				&& lhs.wBitsPerSample == rhs.wBitsPerSample
+				&& lhs.cbSize == rhs.cbSize;
 		}
 
-		public static bool operator !=(WaveFormatEx a, WaveFormatEx b)
+		public static bool operator !=(WaveFormatEx lhs, WaveFormatEx rhs)
 		{
-			return !a.Equals(b);
+			return !(lhs == rhs);
 		}
 	};
 

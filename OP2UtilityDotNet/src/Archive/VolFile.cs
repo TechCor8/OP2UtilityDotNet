@@ -74,16 +74,18 @@ namespace OP2UtilityDotNet.Archive
 		}
 
 		// Create a new archive with the files specified in filesToPack
-		public static void CreateArchive(string volumeFilename, List<string> filesToPack)
+		public static void CreateArchive(string volumeFilename, IEnumerable<string> filesToPack)
 		{
+			List<string> filesToPackSorted = new List<string>(filesToPack);
+
 			// Sort files alphabetically based on the filename only (not including the full path).
 			// Packed files must be locatable by a binary search of their filename.
-			filesToPack.Sort(new System.Comparison<string>((s1, s2) => Path.GetFileName(s1).CompareTo(Path.GetFileName(s2))));
+			filesToPackSorted.Sort(new System.Comparison<string>((s1, s2) => Path.GetFileName(s1).CompareTo(Path.GetFileName(s2))));
 
 			CreateVolumeInfo volInfo = new CreateVolumeInfo();
 
-			volInfo.filesToPack = filesToPack;
-			volInfo.names = GetNamesFromPaths(filesToPack);
+			volInfo.filesToPack = filesToPackSorted;
+			volInfo.names = GetNamesFromPaths(filesToPackSorted);
 
 			// Allowing duplicate names when packing may cause unintended results during binary search and file extraction.
 			VerifySortedContainerHasNoDuplicateNames(volInfo.names);

@@ -218,12 +218,9 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public override bool Equals(object obj)
 		{
-			BitmapFile header = obj as BitmapFile;
+			BitmapFile rhs = obj as BitmapFile;
 
-			if (header == null)
-				return false;
-
-			return header == this;
+			return this == rhs;
 		}
 
 		public override int GetHashCode()
@@ -233,6 +230,12 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public static bool operator ==(BitmapFile lhs, BitmapFile rhs)
 		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+
 			if (lhs.palette.Length != rhs.palette.Length)
 				return false;
 

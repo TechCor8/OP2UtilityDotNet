@@ -1,5 +1,5 @@
 ﻿
-namespace OP2UtilityDotNet.Map
+namespace OP2UtilityDotNet.OP2Map
 {
 	// CellTypes returned and set by the GameMap class
 	public enum CellType

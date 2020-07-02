@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.IO;
 
 namespace OP2UtilityDotNet.Bitmap
@@ -44,7 +45,7 @@ namespace OP2UtilityDotNet.Bitmap
 
 			Color c = (Color)obj;
 
-			return c == this;
+			return this == c;
 		}
 
 		public override int GetHashCode()
@@ -69,6 +70,16 @@ namespace OP2UtilityDotNet.Bitmap
 		public Color[] colors = new Color[256];
 
 
+		public Palette() { }
+
+		public Palette(Palette clone)
+		{
+			if (colors.Length != clone.colors.Length)
+				throw new Exception("clone color length is invalid. Expected: " + colors.Length + " Actual: " + clone.colors.Length);
+
+			Array.Copy(clone.colors, colors, colors.Length);
+		}
+
 		public void Serialize(BinaryWriter writer)
 		{
 			for (int i=0; i < colors.Length; ++i)
@@ -84,18 +95,18 @@ namespace OP2UtilityDotNet.Bitmap
 
 	public class DiscreteColor
 	{
-		public static readonly Color Black = new Color( 0, 0, 0, 0 );
-		public static readonly Color White = new Color( 255, 255, 255,0 );
+		public static Color Black { get { return new Color( 0, 0, 0, 0 ); }  }
+		public static Color White { get { return new Color( 255, 255, 255,0 ); }  }
 
-		public static readonly Color Red = new Color( 255, 0, 0, 0 );
-		public static readonly Color Green = new Color( 0, 255, 0, 0 );
-		public static readonly Color Blue = new Color( 0, 0, 255, 0 );
+		public static Color Red { get { return new Color( 255, 0, 0, 0 ); }  }
+		public static Color Green { get { return new Color( 0, 255, 0, 0 ); }  }
+		public static Color Blue { get { return new Color( 0, 0, 255, 0 ); }  }
 
-		public static readonly Color Yellow = new Color( 255, 255, 0 );
-		public static readonly Color Cyan = new Color( 0, 255, 255 );
-		public static readonly Color Magenta = new Color( 255, 0, 255 );
+		public static Color Yellow { get { return new Color( 255, 255, 0 ); }  }
+		public static Color Cyan { get { return new Color( 0, 255, 255 ); }  }
+		public static Color Magenta { get { return new Color( 255, 0, 255 ); }  }
 
-		public static readonly Color TransparentBlack = new Color( 0, 0, 0, 255 );
-		public static readonly Color TransparentWhite = new Color( 255, 255, 255, 255 );
+		public static Color TransparentBlack { get { return new Color( 0, 0, 0, 255 ); }  }
+		public static Color TransparentWhite { get { return new Color( 255, 255, 255, 255 ); }  }
 	}
 }
