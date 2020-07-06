@@ -34,9 +34,14 @@ namespace OP2UtilityDotNet
 		public byte[] GetResource(string filename, bool accessArchives = true)
 		{
 			using (Stream stream = GetResourceStream(filename, accessArchives))
-			using (BinaryReader reader = new BinaryReader(stream))
 			{
-				return reader.ReadBytes((int)stream.Length);
+				if (stream == null)
+					return null;
+
+				using (BinaryReader reader = new BinaryReader(stream))
+				{
+					return reader.ReadBytes((int)stream.Length);
+				}
 			}
 		}
 
@@ -64,7 +69,7 @@ namespace OP2UtilityDotNet
 
 				if (archiveFile.Contains(filename)) {
 					int index = archiveFile.GetIndex(filename);
-					return archiveFile.OpenStream(index);
+					return archiveFile.ExtractFileToMemory(index);
 				}
 			}
 
