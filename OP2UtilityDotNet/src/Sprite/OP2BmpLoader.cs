@@ -15,6 +15,22 @@ namespace OP2UtilityDotNet.Sprite
 			artFile = ArtFile.Read(artFilename);
 		}
 
+		public OP2BmpLoader(string bmpFilename, Stream artStream)
+		{
+			FileStream fs = new FileStream(bmpFilename, FileMode.Open, FileAccess.Read, FileShare.Read);
+			bmpReader = new BinaryReader(fs);
+			
+			artFile = ArtFile.Read(artStream);
+		}
+
+		public OP2BmpLoader(string bmpFilename, ArtFile artFile)
+		{
+			FileStream fs = new FileStream(bmpFilename, FileMode.Open, FileAccess.Read, FileShare.Read);
+			bmpReader = new BinaryReader(fs);
+			
+			this.artFile = artFile;
+		}
+
 		public void ExtractImage(int index, string filenameOut)
 		{
 			artFile.VerifyImageIndexInBounds(index);
@@ -37,6 +53,39 @@ namespace OP2UtilityDotNet.Sprite
 			}
 
 			BitmapFile.WriteIndexed(filenameOut, imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
+		}
+
+		public MemoryStream GetImageStream(int index)
+		{
+			MemoryStream stream = new MemoryStream();
+
+			using (BinaryWriter writer = new BinaryWriter(stream, System.Text.Encoding.ASCII, true))
+			{
+				artFile.VerifyImageIndexInBounds(index);
+
+				ImageMeta imageMeta = artFile.imageMetas[index];
+
+				Color[] palette = new Color[artFile.palettes[imageMeta.paletteIndex].colors.Length];
+				System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
+
+				uint pixelOffset = (uint)(imageMeta.pixelDataOffset + 14 + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes);
+
+				SliceStream pixels = GetPixels(pixelOffset, imageMeta.scanLineByteWidth * imageMeta.height);
+
+				byte[] pixelContainer = new byte[imageMeta.scanLineByteWidth * imageMeta.height];
+				pixels.Read(pixelContainer, 0, pixelContainer.Length);
+
+				// Outpost 2 stores pixels in normal raster scan order (top-down). This requires a negative height for BMP file format.
+				if (imageMeta.height > uint.MaxValue) {
+					throw new System.Exception("Image height is too large to fit in standard bitmap file format.");
+				}
+
+				BitmapFile.WriteIndexed(writer, imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
+			}
+
+			stream.Seek(0, SeekOrigin.Begin);
+
+			return stream;
 		}
 
 		// Bmp loader for Outpost 2 specific BMP file
