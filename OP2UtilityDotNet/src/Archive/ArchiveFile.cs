@@ -48,7 +48,41 @@ namespace OP2UtilityDotNet.Archive
 
 		public abstract string GetName(int index);
 		public abstract int GetSize(int index);
-		public abstract void ExtractFile(int index, string pathOut);
+		public abstract void ExtractFileToStream(int index, Stream stream);
+
+		public MemoryStream ExtractFileToMemory(int index)
+		{
+			MemoryStream stream = new MemoryStream();
+
+			ExtractFileToStream(index, stream);
+			stream.Position = 0;
+
+			return stream;
+		}
+
+		public void ExtractFile(int index, string pathOut)
+		{
+			FileStream fs;
+
+			try
+			{
+				fs = new FileStream(pathOut, FileMode.Create, FileAccess.Write, FileShare.None);
+			}
+			catch (System.Exception e)
+			{
+				throw new System.Exception("Error attempting to extract file " + pathOut + ". Internal Error Message: " + e);
+			}
+
+			try
+			{
+				ExtractFileToStream(index, fs);
+			}
+			finally
+			{
+				fs.Dispose();
+			}
+		}
+
 		public virtual void ExtractAllFiles(string destDirectory)
 		{
 			for (int i = 0; i < GetCount(); ++i)

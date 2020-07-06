@@ -45,19 +45,18 @@ namespace OP2UtilityDotNet.Archive
 		}
 
 		// Extraction
-		// Extracts the internal file at the given index to the filename.
-		public override void ExtractFile(int index, string pathOut)
+		public override void ExtractFileToStream(int index, Stream stream)
 		{
 			VerifyIndexInBounds(index);
 			IndexEntry indexEntry = m_IndexEntries[index];
 
 			if (indexEntry.compressionType == CompressionType.Uncompressed)
 			{
-				ExtractFileUncompressed(index, pathOut);
+				ExtractFileUncompressed(index, stream);
 			}
 			else if (indexEntry.compressionType == CompressionType.LZH)
 			{
-				ExtractFileLzh(index, pathOut);
+				ExtractFileLzh(index, stream);
 			}
 			else
 			{
@@ -112,25 +111,22 @@ namespace OP2UtilityDotNet.Archive
 			return (int)m_IndexEntries[index].filenameOffset;
 		}
 
-		private void ExtractFileUncompressed(int index, string pathOut)
+		private void ExtractFileUncompressed(int index, Stream destination)
 		{
 			try
 			{
 				// Calling GetSectionHeader moves the streamReader's position to just past the SectionHeader
 				SectionHeader sectionHeader = GetSectionHeader(index);
 				byte[] buffer = archiveFileReader.ReadBytes((int)sectionHeader.length);
-				using (FileStream fs = new FileStream(pathOut, FileMode.Create, FileAccess.Write, FileShare.None))
-				{
-					fs.Write(buffer, 0, buffer.Length);
-				}
+				destination.Write(buffer, 0, buffer.Length);
 			}
 			catch (System.Exception e)
 			{
-				throw new System.Exception("Error attempting to extracted uncompressed file " + pathOut + ". Internal Error Message: " + e);
+				throw new System.Exception("Error attempting to extracted uncompressed file " + index + ". Internal Error Message: " + e);
 			}
 		}
 
-		private void ExtractFileLzh(int index, string pathOut)
+		private void ExtractFileLzh(int index, Stream destination)
 		{
 			try
 			{
@@ -144,20 +140,17 @@ namespace OP2UtilityDotNet.Archive
 
 				HuffLZ decompressor = new HuffLZ(new BitStreamReader(buffer, length));
 
-				using (FileStream fileStreamWriter = new FileStream(pathOut, FileMode.Create, FileAccess.Write, FileShare.None))
-				{
-					int len;
+				int len;
 
-					do
-					{
-						MemoryStream decompressedBuffer = decompressor.GetInternalBuffer(out len);
-						fileStreamWriter.Write(decompressedBuffer.ToArray(), 0, len);
-					} while (len > 0);
-				}
+				do
+				{
+					MemoryStream decompressedBuffer = decompressor.GetInternalBuffer(out len);
+					destination.Write(decompressedBuffer.ToArray(), 0, len);
+				} while (len > 0);
 			}
 			catch (System.Exception e)
 			{
-				throw new System.Exception("Error attempting to extract LZH compressed file " + pathOut + ". Internal Error Message: " + e);
+				throw new System.Exception("Error attempting to extract LZH compressed file " + index + ". Internal Error Message: " + e);
 			}
 		}
 

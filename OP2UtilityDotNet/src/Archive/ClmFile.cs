@@ -34,7 +34,7 @@ namespace OP2UtilityDotNet.Archive
 		}
 
 		// Extracts the internal file corresponding to index
-		public override void ExtractFile(int index, string pathOut)
+		public override void ExtractFileToStream(int index, Stream stream)
 		{
 			VerifyIndexInBounds(index);
 			IndexEntry indexEntry = indexEntries[index];
@@ -43,8 +43,7 @@ namespace OP2UtilityDotNet.Archive
 
 			try
 			{
-				using (FileStream fs = new FileStream(pathOut, FileMode.Create, FileAccess.Write, FileShare.None))
-				using (BinaryWriter waveFileWriter = new BinaryWriter(fs))
+				using (BinaryWriter waveFileWriter = new BinaryWriter(stream, System.Text.Encoding.ASCII, true))
 				{
 					header.Serialize(waveFileWriter);
 
@@ -57,7 +56,7 @@ namespace OP2UtilityDotNet.Archive
 			}
 			catch (System.Exception e)
 			{
-				throw new System.Exception("Error attempting to extracted uncompressed file " + pathOut + ". Internal Error Message: " + e);
+				throw new System.Exception("Error attempting to extracted uncompressed file " + index + ". Internal Error Message: " + e);
 			}
 		}
 
