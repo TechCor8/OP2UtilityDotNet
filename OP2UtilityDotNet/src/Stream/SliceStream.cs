@@ -45,7 +45,7 @@ namespace OP2UtilityDotNet.Streams
 		{
 			if (_Position + count > _DataLength)
 			{
-				throw new EndOfStreamException();
+				return 0;
 			}
 
 			// Set base stream position
