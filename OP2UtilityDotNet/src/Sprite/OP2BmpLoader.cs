@@ -65,14 +65,29 @@ namespace OP2UtilityDotNet.Sprite
 
 				ImageMeta imageMeta = artFile.imageMetas[index];
 
-				Color[] palette = new Color[artFile.palettes[imageMeta.paletteIndex].colors.Length];
-				System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
+				Color[] palette;
+				if (imageMeta.type.bShadow != 0)
+				{
+					// Shadow graphic uses a 2 color palette
+					palette = new Color[2];
+					System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
+				}
+				else
+				{
+					// Normal graphic
+					palette = new Color[artFile.palettes[imageMeta.paletteIndex].colors.Length];
+					System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
+				}
 
-				uint pixelOffset = (uint)(imageMeta.pixelDataOffset + 14 + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes);
+				// Palette length is always 256 for OP2's master BMP
+				uint pixelOffset = (uint)(imageMeta.pixelDataOffset + 14 + ImageHeader.SizeInBytes + 256 * Color.SizeInBytes);
 
-				SliceStream pixels = GetPixels(pixelOffset, imageMeta.scanLineByteWidth * imageMeta.height);
+				int height = (int)System.Math.Abs(imageMeta.height);
+				int pitch = ImageHeader.CalculatePitch(imageMeta.GetBitCount(), (int)imageMeta.width);
 
-				byte[] pixelContainer = new byte[imageMeta.scanLineByteWidth * imageMeta.height];
+				SliceStream pixels = GetPixels(pixelOffset, (uint)(height * pitch));
+
+				byte[] pixelContainer = new byte[height * pitch];
 				pixels.Read(pixelContainer, 0, pixelContainer.Length);
 
 				// Outpost 2 stores pixels in normal raster scan order (top-down). This requires a negative height for BMP file format.

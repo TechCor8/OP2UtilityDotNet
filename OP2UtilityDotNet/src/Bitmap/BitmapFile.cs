@@ -82,7 +82,7 @@ namespace OP2UtilityDotNet.Bitmap
 			for (int i=0; i < palette.Length; ++i)
 				palette[i].Serialize(seekableWriter);
 
-			WritePixels(seekableWriter, indexedPixels, width, bitCount);
+			WritePixels(seekableWriter, indexedPixels, width, height, bitCount);
 		}
 		public static void WriteIndexed(string filename, BitmapFile bitmapFile)
 		{
@@ -203,16 +203,19 @@ namespace OP2UtilityDotNet.Bitmap
 			bmpHeader.Serialize(seekableWriter);
 			imageHeader.Serialize(seekableWriter);
 		}
-		private static void WritePixels(BinaryWriter seekableWriter, byte[] pixels, int width, ushort bitCount)
+		private static void WritePixels(BinaryWriter seekableWriter, byte[] pixels, int width, int height, ushort bitCount)
 		{
+			height = System.Math.Abs(height);
+
 			int pitch = ImageHeader.CalculatePitch(bitCount, width);
 			int bytesOfPixelsPerRow = ImageHeader.CalcPixelByteWidth(bitCount, width);
 			byte[] padding = new byte[pitch - bytesOfPixelsPerRow];
 
-			for (int i = 0; i < pixels.Length;) {
-				seekableWriter.Write(pixels, i, bytesOfPixelsPerRow);
+			//for (int i = 0; i+bytesOfPixelsPerRow <= pixels.Length; i += pitch) {
+			for (int y=0; y < height; ++y)
+			{
+				seekableWriter.Write(pixels, y*pitch, bytesOfPixelsPerRow);
 				seekableWriter.Write(padding);
-				i += pitch;
 			}
 		}
 
