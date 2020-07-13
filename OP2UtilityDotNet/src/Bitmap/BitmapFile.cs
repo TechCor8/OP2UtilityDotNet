@@ -7,7 +7,7 @@ namespace OP2UtilityDotNet.Bitmap
 	{
 		public BmpHeader bmpHeader;
 		public ImageHeader imageHeader;
-		public Color[] palette;
+		public Color[] palette; // Bitmap files store palette colors in BGR format
 		public byte[] pixels;
 
 
@@ -18,8 +18,12 @@ namespace OP2UtilityDotNet.Bitmap
 			int row = y*pitch;							// The row of the pixel to set
 			int bitOffset = x * imageHeader.bitCount;	// The bit offset in the row
 			int byteOffset = bitOffset / 8;				// The byte offset in the row
-			bitOffset %= 8;								// The bit offset relative to the byte offset
 			int index = row + byteOffset;				// The index to set
+
+			// The bit offset relative to the byte offset
+			// The pixels are stored with most-significant first
+			bitOffset %= 8;
+			bitOffset = 8 - (bitOffset + imageHeader.bitCount);
 
 			// A mask for the bits to set for the byte at the "index" in the pixel array
 			int mask = ~(~0 << imageHeader.bitCount) << bitOffset;
@@ -31,9 +35,17 @@ namespace OP2UtilityDotNet.Bitmap
 			pixels[index] |= (byte)((paletteIndex << bitOffset) & mask); // Insert masked palette index
 		}
 
+		// Returns raw pixel in BGR format
 		public Color GetPixel(int x, int y)
 		{
 			return palette[GetPixelPaletteIndex(x,y)];
+		}
+
+		//Returns pixel in RGB format
+		public Color GetPixelRGB(int x, int y)
+		{
+			Color color = palette[GetPixelPaletteIndex(x,y)];
+			return new Color(color.blue, color.green, color.red, color.alpha);
 		}
 
 		public int GetPixelPaletteIndex(int x, int y)
@@ -43,8 +55,12 @@ namespace OP2UtilityDotNet.Bitmap
 			int row = y*pitch;							// The row of the pixel to get
 			int bitOffset = x * imageHeader.bitCount;	// The bit offset in the row
 			int byteOffset = bitOffset / 8;				// The byte offset in the row
-			bitOffset %= 8;								// The bit offset relative to the byte offset
 			int index = row + byteOffset;				// The index to get
+
+			// The bit offset relative to the byte offset
+			// The pixels are stored with most-significant first
+			bitOffset %= 8;
+			bitOffset = 8 - (bitOffset + imageHeader.bitCount);
 
 			// A mask for the bits to get for the byte at the "index" in the pixel array
 			int mask = ~(~0 << imageHeader.bitCount) << bitOffset;
