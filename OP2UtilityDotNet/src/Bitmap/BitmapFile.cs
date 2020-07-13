@@ -11,6 +11,52 @@ namespace OP2UtilityDotNet.Bitmap
 		public byte[] pixels;
 
 
+		public void SetPixel(int x, int y, int paletteIndex)
+		{
+			int pitch = ImageHeader.CalculatePitch(imageHeader.bitCount, imageHeader.width);
+			
+			int row = y*pitch;							// The row of the pixel to set
+			int bitOffset = x * imageHeader.bitCount;	// The bit offset in the row
+			int byteOffset = bitOffset / 8;				// The byte offset in the row
+			bitOffset %= 8;								// The bit offset relative to the byte offset
+			int index = row + byteOffset;				// The index to set
+
+			// A mask for the bits to set for the byte at the "index" in the pixel array
+			int mask = ~(~0 << imageHeader.bitCount) << bitOffset;
+
+			// NOTE:
+			// We are assuming that the pixel will not fall between bytes (e.g. 2 bits on index 1 and 2 bits on index 2).
+			// This is a safe assumption for 1, 2, 4, and 8 bits per pixel.
+			pixels[index] &= (byte)~mask; // Clear masked bits
+			pixels[index] |= (byte)((paletteIndex << bitOffset) & mask); // Insert masked palette index
+		}
+
+		public Color GetPixel(int x, int y)
+		{
+			return palette[GetPixelPaletteIndex(x,y)];
+		}
+
+		public int GetPixelPaletteIndex(int x, int y)
+		{
+			int pitch = ImageHeader.CalculatePitch(imageHeader.bitCount, imageHeader.width);
+			
+			int row = y*pitch;							// The row of the pixel to get
+			int bitOffset = x * imageHeader.bitCount;	// The bit offset in the row
+			int byteOffset = bitOffset / 8;				// The byte offset in the row
+			bitOffset %= 8;								// The bit offset relative to the byte offset
+			int index = row + byteOffset;				// The index to get
+
+			// A mask for the bits to get for the byte at the "index" in the pixel array
+			int mask = ~(~0 << imageHeader.bitCount) << bitOffset;
+
+			// NOTE:
+			// We are assuming that the pixel will not fall between bytes (e.g. 2 bits on index 1 and 2 bits on index 2).
+			// This is a safe assumption for 1, 2, 4, and 8 bits per pixel.
+			int paletteIndex = pixels[index] & (byte)mask; // Clear unmasked bits
+			return paletteIndex >> bitOffset;
+		}
+
+
 		public BitmapFile() { }
 
 		/// <summary>
