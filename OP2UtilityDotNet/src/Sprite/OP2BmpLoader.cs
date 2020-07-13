@@ -52,6 +52,12 @@ namespace OP2UtilityDotNet.Sprite
 
 		private void WriteToStream(Stream destination, int index)
 		{
+			BitmapFile bmpFile = GetImage(index);
+			bmpFile.Serialize(destination);
+		}
+
+		public BitmapFile GetImage(int index)
+		{
 			artFile.VerifyImageIndexInBounds(index);
 
 			ImageMeta imageMeta = artFile.imageMetas[index];
@@ -86,8 +92,7 @@ namespace OP2UtilityDotNet.Sprite
 				throw new System.Exception("Image height is too large to fit in standard bitmap file format.");
 			}
 
-			BitmapFile bmpFile = new BitmapFile(imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
-			bmpFile.Serialize(destination);
+			return new BitmapFile(imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
 		}
 
 		// Bmp loader for Outpost 2 specific BMP file
