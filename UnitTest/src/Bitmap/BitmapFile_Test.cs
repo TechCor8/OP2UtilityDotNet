@@ -15,7 +15,7 @@ namespace UnitTest.src.Bitmap
 			BitmapFile bitmapFile = BitmapFile.CreateDefaultIndexed(bitCount, width, height);
 			BitmapFile bitmapFile2;
 
-			BitmapFile.WriteIndexed(filename, bitmapFile);
+			bitmapFile.Serialize(filename);
 			bitmapFile2 = BitmapFile.ReadIndexed(filename);
 
 			Assert.AreEqual(bitmapFile, bitmapFile2);

@@ -15,8 +15,8 @@ namespace UnitTest.src.Bitmap
 			byte[] pixels = new byte[4];
 			string filename = "MonochromeTest.bmp";
 
-			Assert.ThrowsException<Exception>(() => BitmapFile.WriteIndexed(filename, 3, 1, 1, palette, pixels));
-			Assert.ThrowsException<Exception>(() => BitmapFile.WriteIndexed(filename, 32, 1, 1, palette, pixels));
+			Assert.ThrowsException<Exception>(() => new BitmapFile(3, 1, 1, palette, pixels).Serialize(filename));
+			Assert.ThrowsException<Exception>(() => new BitmapFile(32, 1, 1, palette, pixels).Serialize(filename));
 
 			File.Delete(filename);
 		}
@@ -28,7 +28,7 @@ namespace UnitTest.src.Bitmap
 			byte[] pixels = new byte[4];
 			string filename = "PaletteRangeTest.bmp";
 
-			Assert.ThrowsException<Exception>(() => BitmapFile.WriteIndexed(filename, 1, 1, 1, palette, pixels));
+			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
 
 			File.Delete(filename);
 		}
@@ -40,7 +40,7 @@ namespace UnitTest.src.Bitmap
 			byte[] pixels = new byte[4];
 			string filename = "PaletteRangeTest.bmp";
 
-			BitmapFile.WriteIndexed(filename, 1, 1, 1, palette, pixels);
+			new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename);
 
 			File.Delete(filename);
 		}
@@ -52,10 +52,10 @@ namespace UnitTest.src.Bitmap
 			string filename = "IncorrectPixelPaddingTest.bmp";
 
 			byte[] pixels = new byte[3];
-			Assert.ThrowsException<Exception>(() => BitmapFile.WriteIndexed(filename, 1, 1, 1, palette, pixels));
+			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
 
 			pixels = new byte[5];
-			Assert.ThrowsException<Exception>(() => BitmapFile.WriteIndexed(filename, 1, 1, 1, palette, pixels));
+			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
 
 			File.Delete(filename);
 		}
