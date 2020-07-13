@@ -52,44 +52,42 @@ namespace OP2UtilityDotNet.Sprite
 
 		private void WriteToStream(Stream destination, int index)
 		{
-			using (BinaryWriter writer = new BinaryWriter(destination, System.Text.Encoding.ASCII, true))
+			artFile.VerifyImageIndexInBounds(index);
+
+			ImageMeta imageMeta = artFile.imageMetas[index];
+
+			Color[] palette;
+			if (imageMeta.type.bShadow != 0)
 			{
-				artFile.VerifyImageIndexInBounds(index);
-
-				ImageMeta imageMeta = artFile.imageMetas[index];
-
-				Color[] palette;
-				if (imageMeta.type.bShadow != 0)
-				{
-					// Shadow graphic uses a 2 color palette
-					palette = new Color[2];
-					System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
-				}
-				else
-				{
-					// Normal graphic
-					palette = new Color[artFile.palettes[imageMeta.paletteIndex].colors.Length];
-					System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
-				}
-
-				// Palette length is always 256 for OP2's master BMP
-				uint pixelOffset = (uint)(imageMeta.pixelDataOffset + 14 + ImageHeader.SizeInBytes + 256 * Color.SizeInBytes);
-
-				int height = (int)System.Math.Abs(imageMeta.height);
-				int pitch = ImageHeader.CalculatePitch(imageMeta.GetBitCount(), (int)imageMeta.width);
-
-				SliceStream pixels = GetPixels(pixelOffset, (uint)(height * pitch));
-
-				byte[] pixelContainer = new byte[height * pitch];
-				pixels.Read(pixelContainer, 0, pixelContainer.Length);
-
-				// Outpost 2 stores pixels in normal raster scan order (top-down). This requires a negative height for BMP file format.
-				if (imageMeta.height > uint.MaxValue) {
-					throw new System.Exception("Image height is too large to fit in standard bitmap file format.");
-				}
-
-				BitmapFile.WriteIndexed(writer, imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
+				// Shadow graphic uses a 2 color palette
+				palette = new Color[2];
+				System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
 			}
+			else
+			{
+				// Normal graphic
+				palette = new Color[artFile.palettes[imageMeta.paletteIndex].colors.Length];
+				System.Array.Copy(artFile.palettes[imageMeta.paletteIndex].colors, palette, palette.Length);
+			}
+
+			// Palette length is always 256 for OP2's master BMP
+			uint pixelOffset = (uint)(imageMeta.pixelDataOffset + 14 + ImageHeader.SizeInBytes + 256 * Color.SizeInBytes);
+
+			int height = (int)System.Math.Abs(imageMeta.height);
+			int pitch = ImageHeader.CalculatePitch(imageMeta.GetBitCount(), (int)imageMeta.width);
+
+			SliceStream pixels = GetPixels(pixelOffset, (uint)(height * pitch));
+
+			byte[] pixelContainer = new byte[height * pitch];
+			pixels.Read(pixelContainer, 0, pixelContainer.Length);
+
+			// Outpost 2 stores pixels in normal raster scan order (top-down). This requires a negative height for BMP file format.
+			if (imageMeta.height > uint.MaxValue) {
+				throw new System.Exception("Image height is too large to fit in standard bitmap file format.");
+			}
+
+			BitmapFile bmpFile = new BitmapFile(imageMeta.GetBitCount(), (int)imageMeta.width, -(int)imageMeta.height, palette, pixelContainer);
+			bmpFile.Serialize(destination);
 		}
 
 		// Bmp loader for Outpost 2 specific BMP file

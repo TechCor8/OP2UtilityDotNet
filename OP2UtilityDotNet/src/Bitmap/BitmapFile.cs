@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace OP2UtilityDotNet.Bitmap
 {
@@ -12,23 +10,66 @@ namespace OP2UtilityDotNet.Bitmap
 		public Color[] palette;
 		public byte[] pixels;
 
-		public static BitmapFile CreateDefaultIndexed(ushort bitCount, uint width, uint height)
-		{
-			BitmapFile bitmapFile = new BitmapFile();
-			bitmapFile.imageHeader = ImageHeader.Create((int)width, (int)height, bitCount);
-			bitmapFile.palette = new Color[bitmapFile.imageHeader.CalcMaxIndexedPaletteSize()];
-			bitmapFile.pixels = new byte[bitmapFile.imageHeader.CalculatePitch() * height];
 
-			int pixelOffset = BmpHeader.SizeInBytes + ImageHeader.SizeInBytes + bitmapFile.palette.Length * Color.SizeInBytes;
-			int bitmapFileSize = pixelOffset + bitmapFile.pixels.Length * sizeof(byte);
+		public BitmapFile() { }
+
+		/// <summary>
+		/// Create default indexed bitmap.
+		/// </summary>
+		public BitmapFile(ushort bitCount, uint width, uint height)
+		{
+			VerifyIndexedImageForSerialization(bitCount);
+			
+			// Create headers and default palette
+			imageHeader = ImageHeader.Create((int)width, (int)height, bitCount);
+			palette = new Color[imageHeader.CalcMaxIndexedPaletteSize()];
+			pixels = new byte[imageHeader.CalculatePitch() * height];
+
+			int pixelOffset = BmpHeader.SizeInBytes + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes;
+			int bitmapFileSize = pixelOffset + pixels.Length * sizeof(byte);
 
 			//if (bitmapFileSize > uint.MaxValue) {
 			//	throw new System.Exception("Maximum size of a bitmap file has been exceeded");
 			//}
 
-			bitmapFile.bmpHeader = BmpHeader.Create((uint)bitmapFileSize, (uint)pixelOffset);
+			bmpHeader = BmpHeader.Create((uint)bitmapFileSize, (uint)pixelOffset);
+		}
 
-			return bitmapFile;
+		/// <summary>
+		/// Create default indexed bitmap with palette and pixels.
+		/// </summary>
+		public BitmapFile(ushort bitCount, int width, int height, Color[] palette, byte[] indexedPixels)
+		{
+			// Validate data
+			VerifyIndexedImageForSerialization(bitCount);
+			VerifyIndexedPaletteSizeDoesNotExceedBitCount(bitCount, palette.Length);
+			VerifyPixelSizeMatchesImageDimensionsWithPitch(bitCount, width, height, indexedPixels.Length);
+
+			// Expand palette, if needed
+			int maxSize = ImageHeader.CalcMaxIndexedPaletteSize(bitCount);
+			if (palette.Length != maxSize)
+			{
+				Color[] newPalette = new Color[maxSize];
+				System.Array.Copy(palette, newPalette, palette.Length < newPalette.Length ? palette.Length : newPalette.Length);
+
+				palette = newPalette;
+			}
+
+			// Create headers
+			int pixelOffset = BmpHeader.SizeInBytes + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes;
+			int fileSize = pixelOffset + ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height);
+
+			bmpHeader = BmpHeader.Create((uint)fileSize, (uint)pixelOffset);
+			imageHeader = ImageHeader.Create(width, height, bitCount);
+
+			// Store data
+			this.palette = palette;
+			pixels = indexedPixels;
+		}
+
+		public static BitmapFile CreateDefaultIndexed(ushort bitCount, uint width, uint height)
+		{
+			return new BitmapFile(bitCount, width, height);
 		}
 
 		// BMP Reader only supports Indexed Color palettes (1, 2, and 8 bit BMPs).
@@ -40,6 +81,7 @@ namespace OP2UtilityDotNet.Bitmap
 				return ReadIndexed(fileReader);
 			}
 		}
+
 		public static BitmapFile ReadIndexed(BinaryReader seekableReader)
 		{
 			BitmapFile bitmapFile = new BitmapFile();
@@ -54,15 +96,30 @@ namespace OP2UtilityDotNet.Bitmap
 
 		// BMP Writer only supporting Indexed Color palettes (1, 2, and 8 bit BMPs).
 		// @indexedPixels: Must include padding to fill each image row out to the next 4 byte memory border (pitch).
-		public static void WriteIndexed(string filename, ushort bitCount, int width, int height, Color[] palette, byte[] indexedPixels)
+		public void Serialize(string filename)
 		{
 			using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
-			using (BinaryWriter fileWriter = new BinaryWriter(fs))
 			{
-				WriteIndexed(fileWriter, bitCount, width, height, palette, indexedPixels);
+				Serialize(fs);
 			}
 		}
-		public static void WriteIndexed(BinaryWriter seekableWriter, ushort bitCount, int width, int height, Color[] palette, byte[] indexedPixels)
+
+		public void Serialize(Stream stream)
+		{
+			// Test all properties that are auto-generated as correct when writing bitmap piecemeal
+			if (imageHeader.compression != BmpCompression.Uncompressed) {
+				throw new System.Exception("Unable to write compressed bitmap files");
+			}
+
+			Validate();
+
+			using (BinaryWriter fileWriter = new BinaryWriter(stream, System.Text.Encoding.ASCII, true))
+			{
+				WriteIndexed(fileWriter, imageHeader.bitCount, imageHeader.width, imageHeader.height, palette, pixels);
+			}
+		}
+
+		private void WriteIndexed(BinaryWriter seekableWriter, ushort bitCount, int width, int height, Color[] palette, byte[] indexedPixels)
 		{
 			VerifyIndexedImageForSerialization(bitCount);
 			VerifyIndexedPaletteSizeDoesNotExceedBitCount(bitCount, palette.Length);
@@ -84,23 +141,12 @@ namespace OP2UtilityDotNet.Bitmap
 
 			WritePixels(seekableWriter, indexedPixels, width, height, bitCount);
 		}
-		public static void WriteIndexed(string filename, BitmapFile bitmapFile)
-		{
-			// Test all properties that are auto-generated as correct when writing bitmap piecemeal
-			if (bitmapFile.imageHeader.compression != BmpCompression.Uncompressed) {
-				throw new System.Exception("Unable to write compressed bitmap files");
-			}
-
-			bitmapFile.Validate();
-
-			WriteIndexed(filename, bitmapFile.imageHeader.bitCount, bitmapFile.imageHeader.width, bitmapFile.imageHeader.height, bitmapFile.palette, bitmapFile.pixels);
-		}
-
-		public void VerifyIndexedPaletteSizeDoesNotExceedBitCount()
+		
+		private void VerifyIndexedPaletteSizeDoesNotExceedBitCount()
 		{
 			VerifyIndexedPaletteSizeDoesNotExceedBitCount(imageHeader.bitCount, palette.Length);
 		}
-		public static void VerifyIndexedPaletteSizeDoesNotExceedBitCount(ushort bitCount, int paletteSize)
+		private void VerifyIndexedPaletteSizeDoesNotExceedBitCount(ushort bitCount, int paletteSize)
 		{
 			if (paletteSize > ImageHeader.CalcMaxIndexedPaletteSize(bitCount)) {
 				throw new System.Exception("Too many colors listed on the indexed palette");
@@ -110,11 +156,12 @@ namespace OP2UtilityDotNet.Bitmap
 		// Check the pixel count is correct and already includes dummy pixels out to next 4 byte boundary.
 		// @width: Width in pixels. Do not include the pitch in width.
 		// @pixelsWithPitchSize: Number of pixels including padding pixels to next 4 byte boundary.
-		public void VerifyPixelSizeMatchesImageDimensionsWithPitch()
+		private void VerifyPixelSizeMatchesImageDimensionsWithPitch()
 		{
 			VerifyPixelSizeMatchesImageDimensionsWithPitch(imageHeader.bitCount, imageHeader.width, imageHeader.height, pixels.Length);
 		}
-		public static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
+
+		private static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
 		{
 			if (pixelsWithPitchSize != ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
 				throw new System.Exception("The size of pixels does not match the image's height time pitch");
