@@ -36,13 +36,13 @@ namespace OP2UtilityDotNet.Bitmap
 		}
 
 		// Returns raw pixel in BGR format
-		public Color GetPixel(int x, int y)
+		public Color GetRawPixel(int x, int y)
 		{
 			return palette[GetPixelPaletteIndex(x,y)];
 		}
 
 		//Returns pixel in RGB format
-		public Color GetPixelRGB(int x, int y)
+		public Color GetPixel(int x, int y)
 		{
 			Color color = palette[GetPixelPaletteIndex(x,y)];
 			return new Color(color.blue, color.green, color.red, color.alpha);
@@ -204,11 +204,11 @@ namespace OP2UtilityDotNet.Bitmap
 			WritePixels(seekableWriter, indexedPixels, width, height, bitCount);
 		}
 		
-		private void VerifyIndexedPaletteSizeDoesNotExceedBitCount()
+		public void VerifyIndexedPaletteSizeDoesNotExceedBitCount()
 		{
 			VerifyIndexedPaletteSizeDoesNotExceedBitCount(imageHeader.bitCount, palette.Length);
 		}
-		private void VerifyIndexedPaletteSizeDoesNotExceedBitCount(ushort bitCount, int paletteSize)
+		public static void VerifyIndexedPaletteSizeDoesNotExceedBitCount(ushort bitCount, int paletteSize)
 		{
 			if (paletteSize > ImageHeader.CalcMaxIndexedPaletteSize(bitCount)) {
 				throw new System.Exception("Too many colors listed on the indexed palette");
@@ -218,12 +218,12 @@ namespace OP2UtilityDotNet.Bitmap
 		// Check the pixel count is correct and already includes dummy pixels out to next 4 byte boundary.
 		// @width: Width in pixels. Do not include the pitch in width.
 		// @pixelsWithPitchSize: Number of pixels including padding pixels to next 4 byte boundary.
-		private void VerifyPixelSizeMatchesImageDimensionsWithPitch()
+		public void VerifyPixelSizeMatchesImageDimensionsWithPitch()
 		{
 			VerifyPixelSizeMatchesImageDimensionsWithPitch(imageHeader.bitCount, imageHeader.width, imageHeader.height, pixels.Length);
 		}
 
-		private static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
+		public static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
 		{
 			if (pixelsWithPitchSize != ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
 				throw new System.Exception("The size of pixels does not match the image's height time pitch");
