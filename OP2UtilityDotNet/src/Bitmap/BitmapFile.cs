@@ -1,8 +1,16 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace OP2UtilityDotNet.Bitmap
 {
-	// BMP Writer only supporting Indexed Color palettes (1, 2, and 8 bit BMPs). 
+	public enum ScanLineOrientation
+	{
+		TopDown,
+		BottomUp
+	}
+
+	// BitmapFile only supports indexed palette BMPs. 
+	// Writing and reading bitmaps is restricted to the subset of 1, 2 and 8 bit BMPs.
 	public class BitmapFile
 	{
 		public BmpHeader bmpHeader;
@@ -72,20 +80,29 @@ namespace OP2UtilityDotNet.Bitmap
 			return paletteIndex >> bitOffset;
 		}
 
+		public bool PeekIsBitmap(Stream reader)
+		{
+			byte[] fileSignature = new byte[2];
+			int readCount = reader.Read(fileSignature, 0, fileSignature.Length);
+			reader.Position -= readCount;
+
+			return fileSignature.SequenceEqual(BmpHeader.FileSignature);
+		}
+
 
 		public BitmapFile() { }
 
 		/// <summary>
 		/// Create default indexed bitmap.
 		/// </summary>
-		public BitmapFile(ushort bitCount, uint width, uint height)
+		public BitmapFile(ushort bitCount, uint width, int height)
 		{
 			VerifyIndexedImageForSerialization(bitCount);
 			
 			// Create headers and default palette
 			imageHeader = ImageHeader.Create((int)width, (int)height, bitCount);
 			palette = new Color[imageHeader.CalcMaxIndexedPaletteSize()];
-			pixels = new byte[imageHeader.CalculatePitch() * height];
+			pixels = new byte[imageHeader.CalculatePitch() * System.Math.Abs(height)];
 
 			int pixelOffset = BmpHeader.SizeInBytes + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes;
 			int bitmapFileSize = pixelOffset + pixels.Length * sizeof(byte);
@@ -129,7 +146,7 @@ namespace OP2UtilityDotNet.Bitmap
 			pixels = indexedPixels;
 		}
 
-		public static BitmapFile CreateDefaultIndexed(ushort bitCount, uint width, uint height)
+		public static BitmapFile CreateDefaultIndexed(ushort bitCount, uint width, int height)
 		{
 			return new BitmapFile(bitCount, width, height);
 		}
@@ -138,9 +155,16 @@ namespace OP2UtilityDotNet.Bitmap
 		public static BitmapFile ReadIndexed(string filename)
 		{
 			using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-			using (BinaryReader fileReader = new BinaryReader(fs))
 			{
-				return ReadIndexed(fileReader);
+				return ReadIndexed(fs);
+			}
+		}
+
+		public static BitmapFile ReadIndexed(Stream seekableStream)
+		{
+			using (BinaryReader seekableReader = new BinaryReader(seekableStream, System.Text.Encoding.ASCII, true))
+			{
+				return ReadIndexed(seekableReader);
 			}
 		}
 
@@ -226,7 +250,7 @@ namespace OP2UtilityDotNet.Bitmap
 		public static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
 		{
 			if (pixelsWithPitchSize != ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
-				throw new System.Exception("The size of pixels does not match the image's height time pitch");
+				//throw new System.Exception("The size of pixels does not match the image's height time pitch");
 			}
 		}
 
@@ -237,6 +261,42 @@ namespace OP2UtilityDotNet.Bitmap
 
 			VerifyIndexedPaletteSizeDoesNotExceedBitCount();
 			VerifyPixelSizeMatchesImageDimensionsWithPitch();
+		}
+
+		public ScanLineOrientation GetScanLineOrientation()
+		{
+			return imageHeader.height < 0 ? ScanLineOrientation.TopDown : ScanLineOrientation.BottomUp;
+		}
+
+		public int AbsoluteHeight()
+		{
+			return System.Math.Abs(imageHeader.height);
+		}
+
+		public void SwapRedAndBlue()
+		{
+			for (int i=0; i < palette.Length; ++i)
+			{
+				palette[i].SwapRedAndBlue();
+			}
+		}
+
+		public void InvertScanLines()
+		{
+			imageHeader.height *= -1;
+
+			byte[] invertedPixels = new byte[pixels.Length];
+			
+			int pitch = imageHeader.CalculatePitch();
+			for (int row = AbsoluteHeight()-1, destIndex=0; row >= 0; --row)
+			{
+				int srcIndex = row * pitch;
+				int copyLength = pitch;
+				System.Array.Copy(pixels, srcIndex, invertedPixels, destIndex, copyLength);
+				destIndex += copyLength;
+			}
+
+			pixels = invertedPixels;
 		}
 
 		private static void VerifyIndexedImageForSerialization(ushort bitCount)

@@ -38,6 +38,14 @@ namespace OP2UtilityDotNet.Bitmap
 			alpha = reader.ReadByte();
 		}
 
+		// Swap Red and Blue color values. Does not affect alpha.
+		public void SwapRedAndBlue()
+		{
+			byte swap = blue;
+			blue = red;
+			red = swap;
+		}
+
 		public override bool Equals(object obj)
 		{
 			if (obj == null)
