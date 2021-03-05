@@ -48,8 +48,16 @@ namespace OP2UtilityDotNet.Archive
 
 		public abstract string GetName(int index);
 		public abstract int GetSize(int index);
+		public void ExtractFileToStream(string name, Stream stream)
+		{
+			ExtractFileToStream(GetIndex(name), stream);
+		}
 		public abstract void ExtractFileToStream(int index, Stream stream);
 
+		public MemoryStream ExtractFileToMemory(string name)
+		{
+			return ExtractFileToMemory(GetIndex(name));
+		}
 		public MemoryStream ExtractFileToMemory(int index)
 		{
 			MemoryStream stream = new MemoryStream();
