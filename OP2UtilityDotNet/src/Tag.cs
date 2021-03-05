@@ -35,14 +35,30 @@ namespace OP2UtilityDotNet
 			Array.Copy(tag.text, text, tag.text.Length);
 		}
 
-		public void Serialize(BinaryWriter writer)
+		public Tag(byte[] bytes)
 		{
-			writer.Write(text);
+			int length = bytes.Length < text.Length ? bytes.Length : text.Length;
+			Array.Copy(bytes, text, length);
 		}
 
-		public Tag(BinaryReader reader)
+		public void Serialize(BinaryWriter writer)
 		{
-			text = reader.ReadBytes(4);
+			Serialize(writer.BaseStream);
+		}
+
+		public void Serialize(Stream writer)
+		{
+			writer.Write(text, 0, text.Length);
+		}
+
+		public Tag(BinaryReader reader) : this(reader.BaseStream)
+		{
+		}
+
+		public Tag(Stream reader)
+		{
+			Array.Clear(text, 0, text.Length);
+			reader.Read(text, 0, text.Length);
 		}
 
 		// Equality and inequality comparable
