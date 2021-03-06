@@ -79,6 +79,8 @@ namespace OP2UtilityDotNet.Sprite
 		// To write tileset in standard bitmap format, use BitmapFile::WriteIndexed
 		public static void WriteCustomTileset(Stream streamToWrite, BitmapFile tileset)
 		{
+			tileset = tileset.Clone();
+
 			ValidateTileset(tileset);
 
 			// OP2 Custom Tileset assumes a positive height and TopDown Scan Line (Contradicts Windows Bitmap File Format)
@@ -197,9 +199,9 @@ namespace OP2UtilityDotNet.Sprite
 
 		private static void SwapPaletteRedAndBlue(Color[] palette)
 		{
-			foreach (Color color in palette)
+			for (int i=0; i < palette.Length; ++i)
 			{
-				color.SwapRedAndBlue();
+				palette[i].SwapRedAndBlue();
 			}
 		}
 	}
