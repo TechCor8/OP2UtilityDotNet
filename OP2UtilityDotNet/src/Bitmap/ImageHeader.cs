@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -158,7 +159,15 @@ namespace OP2UtilityDotNet.Bitmap
 		public void Validate()
 		{
 			if (headerSize != ImageHeader.SizeInBytes) {
-				throw new System.Exception("Image Header size must be equal to " + ImageHeader.SizeInBytes);
+				if (headerSize == ImageHeaderV4.SizeInBytes) {
+					throw new System.Exception("Image Header size indicates header version 4. Only version 1 is supported.");
+				}
+			
+				if (headerSize == ImageHeaderV5.SizeInBytes) {
+					throw new System.Exception("Image header size indicates header version 5. Only version 1 is supported.");
+				}
+
+				throw new System.Exception("Unknown image header size of " + headerSize + " detected. Header size must be equal to " + ImageHeader.SizeInBytes);
 			}
 
 			if (planes != DefaultPlanes) {
@@ -214,7 +223,68 @@ namespace OP2UtilityDotNet.Bitmap
 		{
 			return !(lhs == rhs);
 		}
+
+		public ImageHeader Clone()
+		{
+			ImageHeader header = new ImageHeader();
+
+			header.headerSize = headerSize;
+			header.width = width;
+			header.height = height;
+			header.planes = planes;
+			header.bitCount = bitCount;
+			header.compression = compression;
+			header.imageSize = imageSize; //Size in bytes of pixels. Valid to set to 0 if no compression used.
+			header.xResolution = xResolution;
+			header.yResolution = yResolution;
+			header.usedColorMapEntries = usedColorMapEntries;
+			header.importantColorCount = importantColorCount;
+
+			return header;
+		}
 	}
 
 	//static_assert(40 == sizeof(ImageHeader), "ImageHeader is an unexpected size");
+
+	public class ImageHeaderV4
+	{
+		public const int SizeInBytes = 17 * 4 + ImageHeader.SizeInBytes;
+
+		public ImageHeader imageHeader = new ImageHeader();
+		public uint redMask;
+		public uint greenMask;
+		public uint blueMask;
+		public uint alphaMask;
+		public uint colorSpaceType;
+		public int redEndpointX;
+		public int redEndpointY;
+		public int redEndpointZ;
+		public int greenEndpointX;
+		public int greenEndpointY;
+		public int greenEndpointZ;
+		public int blueEndpointX;
+		public int blueEndpointY;
+		public int blueEndpointZ;
+		public uint gammaRed;
+		public uint gammaGreen;
+		public uint gammaBlue;
+	}
+
+	//static_assert(108 == sizeof(ImageHeaderV4), "ImageHeaderV4 is an unexpected size");
+
+	public class ImageHeaderV5
+	{
+		public const int SizeInBytes = 4 * 4 + ImageHeaderV4.SizeInBytes;
+
+		public ImageHeaderV4 imageHeader = new ImageHeaderV4();
+		public uint gamutMatchingIntent;
+		// Offset in bytes from the beginning of the image header to the start of the profile data
+		public uint profileDataOffset;
+		// Size in bytes of embedded profile data
+		public uint profileDataSize;
+		// Reservered member should always be set to zero.
+		public uint reserved;
+	}
+
+	//static_assert(124 == sizeof(ImageHeaderV5), "ImageHeaderV5 is an unexpected size");
 }
