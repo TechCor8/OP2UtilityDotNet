@@ -133,9 +133,20 @@ namespace UnitTest.src.Bitmap
 
 			imageHeader.Validate();
 
+			imageHeader.headerSize = ImageHeaderV4.SizeInBytes;
+			TestInvalidImageHeaderSize(imageHeader, "version 4");
+
+			imageHeader.headerSize = ImageHeaderV5.SizeInBytes;
+			TestInvalidImageHeaderSize(imageHeader, "version 5");
+	
 			imageHeader.headerSize = 0;
-			Assert.ThrowsException<Exception>(() => imageHeader.Validate());
+			TestInvalidImageHeaderSize(imageHeader, "Unknown");
+
 			imageHeader.headerSize = ImageHeader.SizeInBytes;
+
+			//imageHeader.headerSize = 0;
+			//Assert.ThrowsException<Exception>(() => imageHeader.Validate());
+			//imageHeader.headerSize = ImageHeader.SizeInBytes;
 
 			imageHeader.planes = 0;
 			Assert.ThrowsException<Exception>(() => imageHeader.Validate());
@@ -152,6 +163,28 @@ namespace UnitTest.src.Bitmap
 			imageHeader.importantColorCount = 3;
 			Assert.ThrowsException<Exception>(() => imageHeader.Validate());
 			imageHeader.importantColorCount = ImageHeader.DefaultImportantColorCount;
+		}
+
+		void TestInvalidImageHeaderSize(ImageHeader imageHeader, string exceptionSubstring)
+		{
+			try
+			{
+				try
+				{
+					imageHeader.Validate();
+				}
+				catch (System.Exception e)
+				{
+					Assert.IsTrue(e.ToString().Contains(exceptionSubstring));
+					return;
+				}
+			}
+			catch (System.Exception)
+			{
+				throw new System.Exception("An ImageHeader containing the size of " + exceptionSubstring + " threw the wrong type of exception");
+			}
+
+			throw new System.Exception("An ImageHeader containing the size of " + exceptionSubstring + " should have thrown an exception, but did not");
 		}
 
 		[TestMethod]

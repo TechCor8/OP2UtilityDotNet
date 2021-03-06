@@ -78,5 +78,14 @@ namespace UnitTest.src.Bitmap
 			Assert.AreNotEqual(DiscreteColor.TransparentBlack, DiscreteColor.Black);
 			Assert.AreNotEqual(DiscreteColor.TransparentWhite, DiscreteColor.White);
 		}
+
+		[TestMethod]
+		public void SwapRedAndBlue()
+		{
+			Color color = DiscreteColor.Blue;
+			color.SwapRedAndBlue();
+
+			Assert.AreEqual(color, DiscreteColor.Red);
+		}
 	}
 }

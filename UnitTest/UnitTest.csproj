@@ -65,6 +65,7 @@
     <Compile Include="src\Map\SavedGameUnits_Test.cs" />
     <Compile Include="src\Sprite\ArtReader_Test.cs" />
     <Compile Include="src\Sprite\ArtWriter_Test.cs" />
+    <Compile Include="src\Sprite\TilesetLoader_Test.cs" />
     <Compile Include="src\Stream\SliceReader_Test.cs" />
     <Compile Include="src\Tag_Test.cs" />
     <Compile Include="src\BitTwiddle_Test.cs" />

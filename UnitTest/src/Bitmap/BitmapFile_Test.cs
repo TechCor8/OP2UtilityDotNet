@@ -8,7 +8,7 @@ namespace UnitTest.src.Bitmap
 	[TestClass]
 	public class BitmapFile_Test
 	{
-		void RoundTripSub(ushort bitCount, uint width, uint height)
+		void RoundTripSub(ushort bitCount, uint width, int height)
 		{
 			const string filename = "BitmapTest.bmp";
 
@@ -55,6 +55,23 @@ namespace UnitTest.src.Bitmap
 		}
 
 		[TestMethod]
+		public void PeekIsBitmapFile()
+		{
+			{
+				MemoryStream writer = new MemoryStream();
+				new BitmapFile(1, 1, 1).Serialize(writer);
+				writer.Position = 0;
+				Assert.IsTrue(BitmapFile.PeekIsBitmap(writer));
+			}
+			{
+				MemoryStream ms = new MemoryStream();
+				BinaryWriter writer = new BinaryWriter(ms);
+				writer.Write("test");
+				Assert.IsFalse(BitmapFile.PeekIsBitmap(ms));
+			}
+		}
+
+		[TestMethod]
 		public void VerifyIndexedPaletteSizeDoesNotExceedBitCount()
 		{
 			BitmapFile.VerifyIndexedPaletteSizeDoesNotExceedBitCount(1, 1);
@@ -79,6 +96,86 @@ namespace UnitTest.src.Bitmap
 			bitmapFile.VerifyPixelSizeMatchesImageDimensionsWithPitch();
 			bitmapFile.pixels = new byte[1];
 			Assert.ThrowsException<Exception>(() => bitmapFile.VerifyPixelSizeMatchesImageDimensionsWithPitch());
+		}
+
+		[TestMethod]
+		public void CreateWithPalette()
+		{
+			BitmapFile bitmapFile = new BitmapFile(8, 2, 2, new Color[] { DiscreteColor.Green });
+
+			Assert.AreEqual(DiscreteColor.Green, bitmapFile.palette[0]);
+
+			// Ensure all pixels are set to palette index 0 (so they register as the initial color)
+			foreach (byte pixel in bitmapFile.pixels)
+			{
+				Assert.AreEqual(0u, pixel);
+			}
+
+			// Proivde palette with more indices than bit count supports
+			Color[] palette = new Color[] { DiscreteColor.Green, DiscreteColor.Red, DiscreteColor.Blue };
+			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 2, 2, palette));
+		}
+
+		[TestMethod]
+		public void TestScanLineOrientation()
+		{
+			{ // Test Negative Height
+				BitmapFile bitmap = new BitmapFile(1, 32, -32);
+				Assert.AreEqual(ScanLineOrientation.TopDown, bitmap.GetScanLineOrientation());
+			}
+			{ // Test Positive Height
+				BitmapFile bitmap = new BitmapFile(1, 32, 32);
+				Assert.AreEqual(ScanLineOrientation.BottomUp, bitmap.GetScanLineOrientation());
+			}
+		}
+
+		[TestMethod]
+		public void AbsoluteHeight()
+		{
+			{ // Test Positive Height
+				BitmapFile bitmap = new BitmapFile(1, 32, 32);
+				Assert.AreEqual(32, bitmap.AbsoluteHeight());
+			}
+			{ // Test Negative Height
+				BitmapFile bitmap = new BitmapFile(1, 32, -32);
+				Assert.AreEqual(32, bitmap.AbsoluteHeight());
+			}
+		}
+
+		[TestMethod]
+		public void SwapRedAndBlue()
+		{
+			BitmapFile bitmapFile = new BitmapFile(8, 2, 2, new Color[] { DiscreteColor.Red });
+
+			bitmapFile.SwapRedAndBlue();
+			Assert.AreEqual(DiscreteColor.Blue, bitmapFile.palette[0]);
+		}
+
+		[TestMethod]
+		public void InvertScanLines()
+		{
+			byte[] pixels = new byte[]
+			{
+				1, 1, 1, 1, 1, 1, 1, 1,
+				0, 0, 0, 0, 0, 0, 0, 0
+			};
+
+			byte[] invertedPixels = new byte[]
+			{
+				0, 0, 0, 0, 0, 0, 0, 0,
+				1, 1, 1, 1, 1, 1, 1, 1
+			};
+
+			BitmapFile bitmap = new BitmapFile(8, 8, 2, new Color[] { /* Empty Palette */ }, pixels);
+			bitmap.InvertScanLines();
+
+			Assert.AreEqual(ScanLineOrientation.TopDown, bitmap.GetScanLineOrientation());
+			CollectionAssert.AreEqual(invertedPixels, bitmap.pixels);
+
+			bitmap.InvertScanLines();
+
+			Assert.AreEqual(ScanLineOrientation.BottomUp, bitmap.GetScanLineOrientation());
+			CollectionAssert.AreEqual(pixels, bitmap.pixels);
 		}
 
 		[TestMethod]
