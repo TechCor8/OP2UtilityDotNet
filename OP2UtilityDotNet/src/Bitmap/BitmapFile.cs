@@ -257,7 +257,7 @@ namespace OP2UtilityDotNet.Bitmap
 
 		public static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
 		{
-			if (pixelsWithPitchSize != ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
+			if (pixelsWithPitchSize < ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
 				throw new System.Exception("The size of pixels does not match the image's height time pitch");
 			}
 		}

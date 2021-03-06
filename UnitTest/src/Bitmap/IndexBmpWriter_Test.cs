@@ -54,8 +54,8 @@ namespace UnitTest.src.Bitmap
 			byte[] pixels = new byte[3];
 			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
 
-			pixels = new byte[5];
-			Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
+			//pixels = new byte[5];
+			//Assert.ThrowsException<Exception>(() => new BitmapFile(1, 1, 1, palette, pixels).Serialize(filename));
 
 			File.Delete(filename);
 		}
