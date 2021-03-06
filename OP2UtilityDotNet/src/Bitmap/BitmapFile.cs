@@ -80,7 +80,7 @@ namespace OP2UtilityDotNet.Bitmap
 			return paletteIndex >> bitOffset;
 		}
 
-		public bool PeekIsBitmap(Stream reader)
+		public static bool PeekIsBitmap(Stream reader)
 		{
 			byte[] fileSignature = new byte[2];
 			int readCount = reader.Read(fileSignature, 0, fileSignature.Length);
@@ -115,14 +115,14 @@ namespace OP2UtilityDotNet.Bitmap
 		}
 
 		/// <summary>
-		/// Create default indexed bitmap with palette and pixels.
+		/// Create default indexed bitmap with palette.
 		/// </summary>
-		public BitmapFile(ushort bitCount, int width, int height, Color[] palette, byte[] indexedPixels)
+		public BitmapFile(ushort bitCount, uint width, int height, Color[] palette) : this(bitCount, width, height)
 		{
-			// Validate data
-			VerifyIndexedImageForSerialization(bitCount);
-			VerifyIndexedPaletteSizeDoesNotExceedBitCount(bitCount, palette.Length);
-			VerifyPixelSizeMatchesImageDimensionsWithPitch(bitCount, width, height, indexedPixels.Length);
+			if (palette.Length > 1 << bitCount)
+			{
+				throw new System.Exception("Unable to create bitmap. Provided palette length is greater than provided bit count.");
+			}
 
 			// Expand palette, if needed
 			int maxSize = ImageHeader.CalcMaxIndexedPaletteSize(bitCount);
@@ -136,14 +136,22 @@ namespace OP2UtilityDotNet.Bitmap
 
 			// Create headers
 			int pixelOffset = BmpHeader.SizeInBytes + ImageHeader.SizeInBytes + palette.Length * Color.SizeInBytes;
-			int fileSize = pixelOffset + ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height);
+			int fileSize = pixelOffset + ImageHeader.CalculatePitch(bitCount, (int)width) * System.Math.Abs(height);
 
 			bmpHeader = BmpHeader.Create((uint)fileSize, (uint)pixelOffset);
-			imageHeader = ImageHeader.Create(width, height, bitCount);
+			imageHeader = ImageHeader.Create((int)width, height, bitCount);
 
 			// Store data
 			this.palette = palette;
+		}
+
+		/// <summary>
+		/// Create default indexed bitmap with palette and pixels.
+		/// </summary>
+		public BitmapFile(ushort bitCount, uint width, int height, Color[] palette, byte[] indexedPixels) : this(bitCount, width, height, palette)
+		{
 			pixels = indexedPixels;
+			VerifyPixelSizeMatchesImageDimensionsWithPitch(bitCount, (int)width, height, indexedPixels.Length);
 		}
 
 		public static BitmapFile CreateDefaultIndexed(ushort bitCount, uint width, int height)
@@ -250,7 +258,7 @@ namespace OP2UtilityDotNet.Bitmap
 		public static void VerifyPixelSizeMatchesImageDimensionsWithPitch(ushort bitCount, int width, int height, int pixelsWithPitchSize)
 		{
 			if (pixelsWithPitchSize != ImageHeader.CalculatePitch(bitCount, width) * System.Math.Abs(height)) {
-				//throw new System.Exception("The size of pixels does not match the image's height time pitch");
+				throw new System.Exception("The size of pixels does not match the image's height time pitch");
 			}
 		}
 
@@ -432,6 +440,19 @@ namespace OP2UtilityDotNet.Bitmap
 		public static bool operator !=(BitmapFile lhs, BitmapFile rhs)
 		{
 			return !(lhs == rhs);
+		}
+
+		public BitmapFile Clone()
+		{
+			BitmapFile bmp = new BitmapFile();
+			bmp.bmpHeader = bmpHeader.Clone();
+			bmp.imageHeader = imageHeader.Clone();
+			bmp.palette = new Color[palette.Length];
+			System.Array.Copy(palette, bmp.palette, palette.Length);
+			bmp.pixels = new byte[pixels.Length];
+			System.Array.Copy(pixels, bmp.pixels, pixels.Length);
+
+			return bmp;
 		}
 	}
 }
