@@ -15,7 +15,7 @@ namespace OP2UtilityDotNet.Sprite
 		/// <summary>
 		/// Constructor from OP2 meta and bitmap data.
 		/// </summary>
-		public OP2BitmapFile(ImageMeta meta, Color[] palette, byte[] indexedPixels) : base(meta.GetBitCount(), (int)meta.width, (int)-meta.height, palette, indexedPixels)
+		public OP2BitmapFile(ImageMeta meta, Color[] palette, byte[] indexedPixels) : base(meta.GetBitCount(), meta.width, (int)-meta.height, palette, indexedPixels)
 		{
 			imageMeta = meta;
 		}
