@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -109,6 +110,19 @@ namespace OP2UtilityDotNet.Bitmap
 		public static bool operator !=(BmpHeader lhs, BmpHeader rhs)
 		{
 			return !(lhs == rhs);
+		}
+
+		public BmpHeader Clone()
+		{
+			BmpHeader header = new BmpHeader();
+			header.fileSignature[0] = fileSignature[0];
+			header.fileSignature[1] = fileSignature[1];
+			header.size = size;
+			header.reserved1 = reserved1;
+			header.reserved2 = reserved2;
+			header.pixelOffset = pixelOffset;
+
+			return header;
 		}
 	}
 
